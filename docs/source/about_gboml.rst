@@ -1,0 +1,4 @@
+About GBOML
+-----------
+
+The graph-based optimization modeling language (GBOML) is a modeling language for mathematical programming designed and implemented at the University of Liège, Belgium. GBOML enables the easy implementation of a broad class of structured mixed-integer linear programs typically found in applications ranging from energy system planning to supply chain management. More precisely, the language is particularly well-suited for representing problems involving the optimization of discrete-time dynamical systems over a finite time horizon and possessing a block structure that can be encoded by a sparse connected hypergraph. The language combines elements of both algebraic and object-oriented modeling languages in order to facilitate problem encoding, speed up model construction, expose problem structure to specialised solvers and simplify post-processing.
