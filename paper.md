@@ -8,7 +8,7 @@ author:
   - name: Hatim Djelassi
     affiliation: 1
 affiliations:
-  - name: Department of Electrical Engineering and Computer Science, University of Liège, Liège, Belgium.
+  - name: Department of Electrical Engineering and Computer Science, University of Liege, Liege, Belgium.
   - index: 1
 date: 14 January 2021
 output:
