@@ -1,0 +1,5 @@
+/build
+/build/doctrees
+/build/html
+*.log
+source/__pycache__
