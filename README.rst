@@ -1,2 +1,1 @@
-# sphinx_gboml_doc
-Sphinx GBOML doc
+This repository was created to prepare the submission of GBOML to JOSS.
