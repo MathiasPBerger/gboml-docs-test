@@ -37,8 +37,8 @@ templates_path = ['_templates']
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
 #latex_documents = []
-sphinx_enable_pdf_build=False
-sphinx_enable_epub_build=False
+enable_pdf_build=False
+enable_epub_build=False
 
 # -- Options for HTML output -------------------------------------------------
 
