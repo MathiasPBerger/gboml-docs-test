@@ -1,29 +1,17 @@
 ---
 title: 'GBOML: Graph-Based Optimization Modeling Language'
 authors:
-  - name: Adrian M. Price-Whelan^[co-first author] # note this makes a footnote saying 'co-first author'
-    orcid: 0000-0003-0872-7098
-    affiliation: "1, 2" # (Multiple affiliations must be quoted)
-  - name: Author Without ORCID^[co-first author] # note this makes a footnote saying 'co-first author'
-    affiliation: 2
-  - name: Author with no affiliation^[corresponding author]
-    affiliation: 3
+  - name: Bardhyl Miftari
+    affiliation: 1
+  - name: Mathias Berger
+    orcid: 0000-0003-3081-4833
+    affiliation: 1
+  - name: Hatim Djelassi
+    affiliation: 1
 affiliations:
- - name: Lyman Spitzer, Jr. Fellow, Princeton University
+ - name: Department of Electrical Engineering and Computer Science, University of Liège, Liège, Belgium
    index: 1
- - name: Institution Name
-   index: 2
- - name: Independent Researcher
-   index: 3
 date: 14 January 2021
-output:
-  pdf_document:
-    number_sections: yes
-    toc: yes
-    toc_depth: 4
-    pandoc_args:
-      - '--lua-filter=scholarly-metadata.lua'
-      - '--lua-filter=author-info-blocks.lua'
 bibliography: references.bib
 ---
 
