@@ -1,9 +1,9 @@
 ---
 title: 'GBOML: Graph-Based Optimization Modeling Language'
 authors:
-  - name: Bardhyl Miftari^[equally contributing authors, corresponding author]
+  - name: Bardhyl Miftari^[co-first author, corresponding author]
     affiliation: 1
-  - name: Mathias Berger^[equally contributing authors, corresponding author]
+  - name: Mathias Berger^[co-first author, corresponding author]
     orcid: 0000-0003-3081-4833
     affiliation: 1
   - name: Hatim Djelassi
