@@ -1,17 +1,20 @@
 ---
 title: 'GBOML: Graph-Based Optimization Modeling Language'
 authors:
-  - name: Bardhyl Miftari
+  - name: Bardhyl Miftari^[equally contributing authors]
     affiliation: 1
-  - name: Mathias Berger
+  - name: Mathias Berger^[equally contributing authors]
     orcid: 0000-0003-3081-4833
     affiliation: 1
   - name: Hatim Djelassi
     affiliation: 1
+  - name: Damien Ernst
+    orcid: 0000-0002-3035-8260
+    affiliation: 1
 affiliations:
  - name: Department of Electrical Engineering and Computer Science, University of Liège, Liège, Belgium
    index: 1
-date: 14 January 2021
+date: 21 January 2021
 bibliography: references.bib
 ---
 
@@ -38,6 +41,6 @@ The tool has already been used in a research article studying the economics of c
 
 # Acknowledgements
 
-The authors gratefully acknowledge the support of the Federal Government of Belgium through its Energy Transition Fund and the INTEGRATION project.
+The authors gratefully acknowledge the support of the Federal Government of Belgium through its Energy Transition Fund and the INTEGRATION project. The authors would also like to thank Adrien Bolland for his help with an early version of the documentation, Jocelyn Mbenoun for testing some early features of the tool, as well as Ghislain Detienne and Thierry Deschuyteneer for constructive discussions.
 
 # References
