@@ -10,12 +10,12 @@ authors:
     affiliation: 1
   - name: Damien Ernst
     orcid: 0000-0002-3035-8260
-    affiliation: "1,2"
+    affiliation: "1, 2"
 affiliations:
- - name: Department of Electrical Engineering and Computer Science, University of Liège, Liège, Belgium
+  - name: Department of Electrical Engineering and Computer Science, University of Liège, Liège, Belgium
    index: 1
-- name: LTCI, Telecom Paris, Institut Polytechnique de Paris
-   index: 2 
+  - name: LTCI, Telecom Paris, Institut Polytechnique de Paris
+   index: 2
 date: 21 January 2021
 bibliography: references.bib
 ---
