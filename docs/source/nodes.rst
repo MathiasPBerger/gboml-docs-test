@@ -38,7 +38,7 @@ Variables
 =========
 
 Variables are declared with one of the two keywords :math:`\texttt{internal}` and :math:`\texttt{external}`. While :math:`\texttt{internal}` variables are meant to model the internal state of a node, :math:`\texttt{external}` variables are meant to model the interaction between different nodes.
-That is, their coupling is modeled by imposing constraints on their :math:`\texttt{external}` variables (which is further discussed when introducing :math:`\texttt{#HYPEREDGE}` blocks). In addition, variables can represent either a scalar or a vector. The syntax for declaring variables in GBOML is as follows:
+That is, the coupling between nodes is modeled by imposing constraints on their :math:`\texttt{external}` variables (which is further discussed when introducing :math:`\texttt{#HYPEREDGE}` blocks). In addition, variables can represent either a scalar or a vector. The syntax for declaring variables in GBOML is as follows:
 
 .. code-block:: c
 
@@ -75,13 +75,13 @@ The syntax rules for the definition of basic equality and inequality constraints
 Therein, both the left-hand side and the right-hand side of the constraints are general expressions while the type of the constraint is indicated by the comparison operator used.
 Furthermore, in line with the fact that parameter and variable definitions are local to a given node, constraints defined in a :math:`\texttt{#NODE}` block must not reference quantities that are defined in other nodes.
 
-Constraints can be named by adding explicitly an identifier to its definition, as follows,
+An identifier can be also be assigned to constraints when defining them. The following syntax can be used to do so:
 
 .. math::
 
     \texttt{<constraint identifier>: <constraint>;}
 
-Adding an identifier can provide useful insight when it comes to the outputted solution via the *detailed_json* option for example.
+Assigning an identifier to constraints makes it possible to uniquely identify them and query additional information from the solver (e.g., retrieve dual variables and slacks).
 
 Given these syntax rules, the following is an example of valid constraint definitions within an appropriate node and time horizon context:
 
@@ -158,7 +158,7 @@ The following is an example illustrating both expansion methods and making use o
  internal : x[T];
  external : outflow[T];
  #CONSTRAINTS
- x[t] >= 0;
+ nonnegativity : x[t] >= 0;
  x[i] <= a[i] for i in [1:(T-2)/2];
  0 <= a[i]*x[i] for i in [2:2:10] where i != 4;
  x[t] == 0 where t == 0 or t == T-1;
@@ -191,14 +191,14 @@ Objectives can also be expanded in two ways, namely via user-defined and automat
 
  \texttt{min : x[t]}, \quad \texttt{min : sum(x[i] for i in [0:T-1])}
 
- Similarly to constraints, objectives can also have an identifier by adding it before the colon, as follows,
+Similarly to constraints, identifiers can be assigned to objectives when defining with the following syntax:
 
- .. code-block:: c
+.. code-block:: c
 
-  min <identifier>: <expression>;
-  max <identifier>: <expression>;
-  min <identifier>: <expression> <expansion range>;
-  max <identifier>: <expression> <expansion range>;
+   min <identifier>: <expression>;
+   max <identifier>: <expression>;
+   min <identifier>: <expression> <expansion range>;
+   max <identifier>: <expression> <expansion range>;
 
 The previous example can be completed by defining an objective function, which yields a complete and valid :math:`\texttt{#NODE}` block:
 
@@ -220,7 +220,7 @@ The previous example can be completed by defining an objective function, which y
  outflow[0] == x[0];
  outflow[t] == outflow[t-1] + x[t];
  #OBJECTIVES
- max last_outflow: outflow[T-1];
+ max final_outflow: outflow[T-1];
 
 As for constraint definitions, the syntax for objective definitions is sufficiently expressive to define nonlinear objectives.
 However, the GBOML parser expects all objectives to be affine with respect to all variables.
