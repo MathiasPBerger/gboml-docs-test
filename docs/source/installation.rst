@@ -77,18 +77,20 @@ To use DSP, you must first install it. At present, DSP developers recommend inst
 The recommended installation steps work as follows. First, the DSP repository must be cloned into a directory of choice (named *your_DSP_directory* in this example). This can be achieved by typing the following commands in a terminal window:
 
 ::
+
 		$ mkdir your_DSP_directory
 		$ cd your_DSP_directory
     $ git clone --recursive https://github.com/Argonne-National-Laboratory/DSP.git
 
-Then, the absolute paths of the directories storing the libraries and header files of the solvers used to build DSP (e.g., Gurobi, CPLEX or SCIP) must be specified in a file named :math:`\texttt{UserConfig.cmake}` and placed in the cloned DSP directory.
-Note that these paths must be consistent with the directory in which the solver was installed in the first place. For example, on Mac, CPLEX library files may be stored in */Applications/CPLEX_Studio1210/cplex/lib/x86-64_osx/static_pic*, while header files
-may be stored in */Applications/CPLEX_Studio1210/cplex/include/ilcplex*. Gurobi libraries and header files may be stored in */Library/gurobi903/mac64/lib* and */Library/gurobi903/mac64/include*. It may sometimes be necessary to also add some of these libraries and DSP dependencies
-on the library path (e.g., by setting the value of the DYLD_LIBRARY_PATH environment variable in your bash profile on Mac).
+Then, the absolute paths of the directories storing the libraries and header files of the solvers used to build DSP (e.g., Gurobi, CPLEX or SCIP) must be specified in a file named :math:`\texttt{UserConfig.cmake}`, which must be placed in the cloned DSP directory.
+Note that these paths must be consistent with that of the directory in which the solver was installed in the first place. For example, on Mac, CPLEX library files may be stored in */Applications/CPLEX_Studio1210/cplex/lib/x86-64_osx/static_pic*, while header files
+may be stored in */Applications/CPLEX_Studio1210/cplex/include/ilcplex*. Gurobi libraries and header files may be stored in */Library/gurobi903/mac64/lib* and */Library/gurobi903/mac64/include*, respectively. In addition, it may sometimes be necessary to also add some of these libraries and DSP dependencies
+on the library path (e.g., by setting the value of the DYLD_LIBRARY_PATH environment variable in your bash profile on Mac) prior to proceeding to the build stage.
 
-The next installation steps make use of `cmake <https://cmake.org/install/>`_. Once cmake is installed, the following commands can be typed in a terminal window, starting in the cloned DSP directory:
+The next installation steps make use of `cmake <https://cmake.org/install/>`_ and make to build the DSP executable and library. Once cmake is installed, the following commands can be typed in a terminal window, starting in the cloned DSP directory:
 
 ::
+
     $ mkdir build
     $ cd build
     $ cmake ..
