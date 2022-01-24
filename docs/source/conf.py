@@ -1,3 +1,18 @@
+# -- Options for HTML output -------------------------------------------------
+
+# The theme to use for HTML and HTML Help pages.  See the documentation for
+# a list of builtin themes.
+#
+html_theme = 'sphinx_rtd_theme'
+#html_theme = 'alabaster'
+numfig = True
+
+# Add any paths that contain custom static files (such as style sheets) here,
+# relative to this directory. They are copied after the builtin static files,
+# so a file named "default.css" will overwrite the builtin "default.css".
+#html_static_path = ['_static']
+
+
 # Configuration file for the Sphinx documentation builder.
 #
 # This file only contains a selection of the most common options. For a full
@@ -18,8 +33,8 @@ sys.path.insert(0, os.path.abspath('.'))
 # -- Project information -----------------------------------------------------
 
 project = 'The Graph-Based Modeling Language'
-copyright = '2021-2022, Miftari Bardhyl, Berger Mathias'
-author = 'Miftari Bardhyl, Berger Mathias'
+copyright = '2021-2022, Bardhyl Miftari, Mathias Berger, Hatim Djelassi, Damien Ernst, University of Liege'
+author = 'Bardhyl Miftari, Mathias Berger, Hatim Djelassi'
 
 
 # -- General configuration ---------------------------------------------------
@@ -36,7 +51,9 @@ templates_path = ['_templates']
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
-
+#latex_documents = []
+enable_pdf_build=False
+enable_epub_build=False
 
 # -- Options for HTML output -------------------------------------------------
 
