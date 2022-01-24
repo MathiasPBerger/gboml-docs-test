@@ -3,3 +3,5 @@
 /build/html
 *.log
 source/__pycache__
+docs/Makefile
+docs/make.bat

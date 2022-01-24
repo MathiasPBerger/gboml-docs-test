@@ -1,12 +1,10 @@
 Nodes
 -----
 
-In the hypergraph abstraction of optimization problems underpinning the GBOML language, nodes represent optimization subproblems. Hence, each node can itself be viewed as a graph, made-up of zero or several *sub-nodes* linked by *sub-hyperedges*.
+In the hypergraph abstraction of optimization problems underpinning the GBOML language, nodes represent optimization subproblems. Hence, each node has its own set of parameters. It is also equipped with a set of variables, which are split into *internal* and *external* (or *coupling*) variables. In addition, a set of constraints can be defined for each node, along with a local objective function representing its contribution to a system-wide objective.
 
-Each node has its own set of parameters. It is also equipped with a set of variables, which are split into *internal* and *external* (or *coupling*) variables. In addition, a set of constraints can be defined for each node, along with a local objective function representing its contribution to a system-wide objective. 
-
-A unique identifier must be assigned to each :math:`\texttt{#NODE}` block, and such a block is further divided into code blocks where parameters, nodes, hyperedges, variables, constraints, and objectives can  be defined.
-Each of these blocks is introduced by one of the following keywords, namely :math:`\texttt{#PARAMETERS}`, :math:`\texttt{#NODE}`, :math:`\texttt{#HYPEREDGE}`, :math:`\texttt{#VARIABLES}`, :math:`\texttt{#CONSTRAINTS}`, and :math:`\texttt{#OBJECTIVES}`.
+A unique identifier must be assigned to each :math:`\texttt{#NODE}` block, and such a block is further divided into code blocks where parameters, variables, constraints, and objectives can  be defined.
+Each of these blocks is introduced by one of the following keywords, namely :math:`\texttt{#PARAMETERS}`, :math:`\texttt{#VARIABLES}`, :math:`\texttt{#CONSTRAINTS}`, and :math:`\texttt{#OBJECTIVES}`.
 A typical :math:`\texttt{#NODE}` block is therefore structured as follows:
 
 .. code-block:: c
@@ -14,12 +12,6 @@ A typical :math:`\texttt{#NODE}` block is therefore structured as follows:
    #NODE <node identifier>
    #PARAMETERS
    // parameter definitions
-   #NODE <node identifier>
-   // optional subnode definition
-   ...
-   #HYPEREDGE <hyperedge identifier>
-   // optional sub-hyperedge definition
-   ...
    #VARIABLES
    // variable definitions
    #CONSTRAINTS
@@ -32,11 +24,7 @@ These different code blocks are discussed in further detail below.
 Parameters
 ==========
 
-The parameters defined within a given :math:`\texttt{#NODE}` block respect the same rules as those defined in the :math:`\texttt{#GLOBAL}` block. However, node parameters are local to the present node, its sub-nodes and sub-hyperedges. Therefore, parameters defined in a *parent* node can be accessed in any resulting *sub-node* or *sub-hyperedge* by referring to the parent's identifier in the prefix. In other words, all parent's parameters can be referred to as:
-
- .. math::
-
-    \texttt{<parent node identifier>.<parameter identifier>}
+The parameters defined within a given :math:`\texttt{#NODE}` block respect the same rules as those defined in the :math:`\texttt{#GLOBAL}` block. However, node parameters are local to the present node and parameters defined in different nodes cannot be accessed in this scope.
 
 For the sake of illustration, the following :math:`\texttt{#PARAMETERS}` block is valid in GBOML:
 
@@ -49,7 +37,7 @@ For the sake of illustration, the following :math:`\texttt{#PARAMETERS}` block i
 Variables
 =========
 
-Variables are declared with one of the two keywords :math:`\texttt{internal}` and :math:`\texttt{external}`. While :math:`\texttt{internal}` variables are meant to model the internal state of a node, :math:`\texttt{external}` variables are meant to model the interaction between different nodes on the same declaration level.
+Variables are declared with one of the two keywords :math:`\texttt{internal}` and :math:`\texttt{external}`. While :math:`\texttt{internal}` variables are meant to model the internal state of a node, :math:`\texttt{external}` variables are meant to model the interaction between different nodes.
 That is, their coupling is modeled by imposing constraints on their :math:`\texttt{external}` variables (which is further discussed when introducing :math:`\texttt{#HYPEREDGE}` blocks). In addition, variables can represent either a scalar or a vector. The syntax for declaring variables in GBOML is as follows:
 
 .. code-block:: c
@@ -62,18 +50,6 @@ That is, their coupling is modeled by imposing constraints on their :math:`\text
 Variables defined only by an identifier are scalar variables, with the identifier giving its name to the variable (Rules 1 and 2). An expression can be added after the identifier to declare a vector variable and specify its length (Rules 3 and 4).
 
 Furthermore, variables can be of different types, which can be specified by using one additional keyword when declaring a variable, namely :math:`\texttt{continuous}`, :math:`\texttt{integer}` or :math:`\texttt{binary}`. Note that if no keyword is specified, variables are assumed to be continuous by default.
-
-A parent node can link one or several of its variables with a child's variable by adding the following to the conserned variable definition before the semicolon, 
-
- .. math::
-
-    \texttt{<- <child node identifier>.<variable identifier>}
-
- .. math::
-
-    \texttt{<- <child node identifier>.<variable identifier>[<expression>]}
-
-Note that, the child's variable must be of same length and can only be linked with the one of its direct parent.
 
 Given these syntax rules, the following :math:`\texttt{#VARIABLES}` block is valid in GBOML:
 
@@ -99,24 +75,24 @@ The syntax rules for the definition of basic equality and inequality constraints
 Therein, both the left-hand side and the right-hand side of the constraints are general expressions while the type of the constraint is indicated by the comparison operator used.
 Furthermore, in line with the fact that parameter and variable definitions are local to a given node, constraints defined in a :math:`\texttt{#NODE}` block must not reference quantities that are defined in other nodes.
 
-Constraints can be named by adding explicitely an identifier to its definition, as follows,
+Constraints can be named by adding explicitly an identifier to its definition, as follows,
 
 .. math::
 
     \texttt{<constraint identifier>: <constraint>;}
 
-Adding an identifier can provide useful insight when it comes to the outputted solution via the *detailed_json* option for example. 
+Adding an identifier can provide useful insight when it comes to the outputted solution via the *detailed_json* option for example.
 
 Given these syntax rules, the following is an example of valid constraint definitions within an appropriate node and time horizon context:
 
 .. code-block:: c
 
  #TIMEHORIZON
- T = 3;
+ T = 2;
 
  #NODE mynode
  #PARAMETERS
- a = {2,4,6};
+ a = {2,4};
  #VARIABLES
  internal : x[T];
  external : outflow[T];
@@ -191,7 +167,7 @@ The following is an example illustrating both expansion methods and making use o
  #OBJECTIVES
  // objective definitions
 
-While the syntax discussed above is sufficiently expressive to define nonlinear equality and inequality constraints, the GBOML compiler expects constraints to be affine with respect to all variables involved. Hence, encoding nonlinear constraints leads to an error being raised.
+While the syntax discussed above is sufficiently expressive to define nonlinear equality and inequality constraints, the GBOML parser expects constraints to be affine with respect to all variables involved. Hence, encoding nonlinear constraints leads to an error being raised.
 
 Objectives
 ==========
@@ -215,15 +191,14 @@ Objectives can also be expanded in two ways, namely via user-defined and automat
 
  \texttt{min : x[t]}, \quad \texttt{min : sum(x[i] for i in [0:T-1])}
 
+ Similarly to constraints, objectives can also have an identifier by adding it before the colon, as follows,
 
-Similarly to constraints, objectives can also have an identifier by adding it before the colon, as follows,
+ .. code-block:: c
 
-.. code-block:: c
-
- min <identifier>: <expression>;
- max <identifier>: <expression>;
- min <identifier>: <expression> <expansion range>;
- max <identifier>: <expression> <expansion range>;
+  min <identifier>: <expression>;
+  max <identifier>: <expression>;
+  min <identifier>: <expression> <expansion range>;
+  max <identifier>: <expression> <expansion range>;
 
 The previous example can be completed by defining an objective function, which yields a complete and valid :math:`\texttt{#NODE}` block:
 
@@ -248,68 +223,4 @@ The previous example can be completed by defining an objective function, which y
  max last_outflow: outflow[T-1];
 
 As for constraint definitions, the syntax for objective definitions is sufficiently expressive to define nonlinear objectives.
-However, the GBOML compiler expects all objectives to be affine with respect to all variables.
-
-Import
-======
-
-A node can also be declared by importing it from another GBOML file by using the following rules, 
-
-.. code-block:: c
-
- #NODE <node identifier> = import <identifiers> FROM <filename>
- #NODE <node identifier> = import <identifiers> FROM <filename> WITH <redefinitions>
-
-The first node identifier is the one of the newly declared node. After the *IMPORT* keyword, a series of dot separated identifiers will name the node searched for in the file indicated by *filename*. These dot separated identifiers can name any node in *filename* by giving the full searched name layer by layer. In other words, any sub-node can be imported by identifying it as, 
-
-.. math::
-
-    \texttt{<parent identifier>.<sub_node identifier>}
-
-giving the full path from the top layer nodes to the sub-node searched for. Note that if a top layer node is wanted, only its identifier is sufficient.
-
-When importing a given node, there exists two types of possible redefinitions: 
-
- * Parameters'value: Redefining an already existing parameter by a different value.
-
- * Variables'coupling type: Changing the internal/external type of a variable. 
-
-To redefining a parameters'value, the usual parameter definition is needed as explained in the Parameters section with the identifier already existing in the node. Note that the redefinition of a parameter must not change its type (vector or scalar). 
-
-The following rule enables to change a variable's coupling type, 
-
-.. code-block:: c
-
- <variable identifier> external;
- <variable identifier> internal;
-
-To illustrate, let us consider the file *file1.txt*, 
-
-.. code-block:: c
-
-  //file1.txt 
-  #NODE Consumers
-    #PARAMETERS
-      total_number = 10;
-
-    #NODE consumer_1 
-      #PARAMETERS
-        price_per_unit = 5;
-        avg_number_of_units = 100;
-      #VARIABLES 
-        internal : delivery[T];
-      ...
-    #VARIABLES 
-      internal : consumer_1_delivery[T] <- consumer_1.delivery[T];
-      ...
-
-The node *consumer_1* can be imported in another file *file2.txt* as,
-
-.. code-block:: c
-
-  //file2.txt 
-  #NODE average_consumer = import Consumers.consumer_1 from "file1.txt" with
-    price_per_unit = 6;
-    delivery external;
-
-This code defines the node *average_consumer* by importing the node *consumer_1* from *file1.txt*. It redefines its parameter *price_per_unit* with a different value and changes the type of the variable *delivery* from *internal* to *external*.
+However, the GBOML parser expects all objectives to be affine with respect to all variables.
