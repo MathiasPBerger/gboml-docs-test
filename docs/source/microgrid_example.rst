@@ -192,11 +192,11 @@ How to run the example
 
 There are two ways of running the microgrid example:
 
-* From the command line: first, you need to go to the GBOML directory, open a terminal and write the following,
+* From the command line: first, you need to go to the GBOML directory, open a terminal window and type the following commands,
 
 .. code-block:: c
 
-	python main.py examples/microgrid/microgrid.txt --cplex --json -o microgrid_example
+	gboml examples/microgrid/microgrid.txt --cplex --json -o microgrid_example
 
 This will solve the microgrid problem using CPLEX and save the solution in "examples/microgrid/microgrid_example.json".
 

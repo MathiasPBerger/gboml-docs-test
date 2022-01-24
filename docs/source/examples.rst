@@ -7,5 +7,6 @@ This section describes some examples
    :maxdepth: 3
    :caption: Contents:
 
-   ./microgrid.rst
-   ./remote_hub.rst
+   ./microgrid_example.rst
+   ./remote_hub_example.rst
+   ./python_api_example.rst

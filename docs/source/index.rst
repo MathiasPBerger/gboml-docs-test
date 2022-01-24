@@ -17,8 +17,8 @@ Graph-Based Optimization Modeling Language Documentation
    ./block_definitions.rst
    ./advanced_features.rst
    ./useful_idioms.rst
-   ./examples.rst
    ./how_to_use.rst
+   ./examples.rst
    ./citation.rst
 
 
