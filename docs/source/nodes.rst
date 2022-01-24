@@ -191,7 +191,7 @@ Objectives can also be expanded in two ways, namely via user-defined and automat
 
  \texttt{min : x[t]}, \quad \texttt{min : sum(x[i] for i in [0:T-1])}
 
-Similarly to constraints, identifiers can be assigned to objectives when defining with the following syntax:
+Similarly to constraints, identifiers can be assigned to objectives when defining them using the following syntax:
 
 .. code-block:: c
 

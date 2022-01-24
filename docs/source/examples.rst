@@ -1,11 +1,12 @@
 Examples
 ========
 
-This section describes some examples
+This section describes three examples. The first example deals with a microgrid system design problem and illustrates the basic features of GBOML.
+The second example is more sophisticated and focuses on a remote carbon-neutral fuel supply chain planning problem.
+Finally, the third example is based on a hypothetical problem illustrating the Python API.
 
 .. toctree::
    :maxdepth: 3
-   :caption: Contents:
 
    ./microgrid_example.rst
    ./remote_hub_example.rst
