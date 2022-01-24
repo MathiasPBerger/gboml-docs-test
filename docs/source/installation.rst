@@ -1,28 +1,24 @@
 Installation
 ============
 
-The installation steps are the following:
+Two installation options are currently available. First, GBOML can be installed via the pip package manager of Python. Second, GBOML can be installed manually by cloning the git repository.
+In addition, solvers must be installed separately, as described below.
 
-* First, GBOML from the git
+Installation via pip
+--------------------
 
-* Second, install its requirements
+To be added
 
-* Third, install a solver from the list of supported solvers and install its interface library
+Manual Installation
+-------------------
 
-And that's it.
-
-Cloning the git
------------------
-The git can be found at https://gitlab.uliege.be/smart_grids/public/gboml. You can either directly download it from there or use
+The git repository can be found `here <https://gitlab.uliege.be/smart_grids/public/gboml>`_. The repository can be cloned by typing the following commands in a terminal window:
 
 ::
 
 	$ git clone https://gitlab.uliege.be/smart_grids/public/gboml
 
-Installing the requirements
----------------------------
-
-To install all the requirements, all you need to do is
+Then, the dependencies of GBOML can be installed by typing the following commands:
 
 ::
 
@@ -30,30 +26,44 @@ To install all the requirements, all you need to do is
 
 Installing the solvers
 ----------------------
-GBOML interfaces with Gurobi, CPLEX, CBC/CLP and DSP. Only one of these is required to solve a GBOML problem. Gurobi and CPLEX are commercial solvers for which academic licences can be granted. CBC/CLP is an open-source solver. DSP is an open-source project which relies on CPLEX and Gurobi to implement structure exploiting methods. The state of DSP is still experimental and should be checked.
+
+GBOML currently interfaces with Gurobi, CPLEX, Xpress, Cbc/Clp and DSP. Only one of these is required to solve a GBOML problem. Gurobi, CPLEX and Xpress are commercial solvers, while Cbc/Clp is an open-source solver. DSP is an experimental open-source project relying on Gurobi, CPLEX and SCIP to implement generic structure-exploiting algorithms (e.g., Dantzig-Wolfe, dual decomposition and Benders decomposition).
 
 Gurobi
 ~~~~~~
 
-First, you need to install Gurobi. For that, please refer to https://www.gurobi.com/.
-Once Gurobi installed, you will need to install its python interface library with
+To use Gurobi, you must first install it. Instructions can be found `here <https://www.gurobi.com/documentation/9.5/quickstart_windows/software_installation_guid.html>`_. Once the solver is installed, the Python API can be downloaded by typing the following commands in a terminal window:
 
 ::
 
 	$ python -m pip install -i https://pypi.gurobi.com gurobipy
 
+Other installation options can be found in `this post <https://support.gurobi.com/hc/en-us/articles/360044290292-How-do-I-install-Gurobi-for-Python->`_. Note that a license is also required to use Gurobi. Free licenses can be requested for academics, as discussed in the following `post <https://www.gurobi.com/academia/academic-program-and-licenses/>`_.
+
 CPLEX
 ~~~~~
-To be able to use CPLEX, you must install it via https://www.ibm.com/support/pages/downloading-ibm-ilog-cplex-optimization-studio-2010. Once the installation done, the python interface library can be downloaded by writing
+To use CPLEX, you must first install it. Instructions can be found `here <https://www.ibm.com/support/pages/downloading-ibm-ilog-cplex-optimization-studio-2010>`_. Once the solver is installed, the Python API can be downloaded by typing the following commands in a terminal window:
 
 ::
 
 	$ pip install cplex
 
+Note that a license is also required to use CPLEX. Licenses can be obtained for free for academics, as discussed in the following `post <https://www.ibm.com/support/pages/ibm-ilog-optimization-academic-initiative>`_.
+
+Xpress
+~~~~~~
+To use Xpress, you must first install it. Instructions can be found `here <https://www.fico.com/fico-xpress-optimization/docs/latest/insight_quick_install/GUID-2D3D6579-9CCA-4605-8C00-E91B6FB846EB.html>`_. Once the solver is installed, the Python API can be downloaded by typing the following commands in a terminal window:
+
+::
+
+	$ pip install xpress
+
+Additional information can be found `here <https://www.fico.com/fico-xpress-optimization/docs/latest/solver/optimizer/python/HTML/chIntro_sec_secInstall.html>`_. Note that a license is also required to use Xpress.
+
 Cbc/Clp
 ~~~~~~~
 
-The installation can be done via https://projects.coin-or.org/Cbc. The interface package can be installed by doing
+To use Cbc or Clp, you must first install them. Instructions can be found `here <https://github.com/coin-or/Cbc>`_. The CyLP package is used to interface with the solver. This package can be installed by typing the following commands in a terminal window:
 
 ::
 
@@ -62,14 +72,26 @@ The installation can be done via https://projects.coin-or.org/Cbc. The interface
 DSP
 ~~~
 
-The installation can be done via 
+To use DSP, you must first install it. At present, DSP developers recommend installing it on a Mac or Linux machine. Installing DSP with the Windows Subsystem Linux UBUNTU 18.04 distribution was tested and found to work too.
+
+The recommended installation steps work as follows. First, the DSP repository must be cloned into a directory of choice (named *your_DSP_directory* in this example). This can be achieved by typing the following commands in a terminal window:
 
 ::
-
+		$ mkdir your_DSP_directory
+		$ cd your_DSP_directory
     $ git clone --recursive https://github.com/Argonne-National-Laboratory/DSP.git
+
+Then, the absolute paths of the directories storing the libraries and header files of the solvers used to build DSP (e.g., Gurobi, CPLEX or SCIP) must be specified in a file named :math:`\texttt{UserConfig.cmake}` and placed in the cloned DSP directory.
+Note that these paths must be consistent with the directory in which the solver was installed in the first place. For example, on Mac, CPLEX library files may be stored in */Applications/CPLEX_Studio1210/cplex/lib/x86-64_osx/static_pic*, while header files
+may be stored in */Applications/CPLEX_Studio1210/cplex/include/ilcplex*. Gurobi libraries and header files may be stored in */Library/gurobi903/mac64/lib* and */Library/gurobi903/mac64/include*. It may sometimes be necessary to also add some of these libraries and DSP dependencies
+on the library path (e.g., by setting the value of the DYLD_LIBRARY_PATH environment variable in your bash profile on Mac).
+
+The next installation steps make use of `cmake <https://cmake.org/install/>`_. Once cmake is installed, the following commands can be typed in a terminal window, starting in the cloned DSP directory:
+
+::
     $ mkdir build
     $ cd build
     $ cmake ..
-    $ make 
+    $ make
 
-The installation steps can also be found at https://github.com/Argonne-National-Laboratory/DSP. Note that the file :math:`\texttt{CMakeLists.txt}` shall be filed after the cloning with the path to the different solvers. An important note also is that DSP is unsupported by native Windows. However, installing DSP with the Windows Subsystem Linux UBUNTU 18.04 is possible. 
+If the make worked properly, an executable called runDsp and a shared library named libDsp should be created in the *src* subfolder of the build directory. Additional information can be found `here <https://github.com/Argonne-National-Laboratory/DSP/blob/master/docs/install.md>`_.
