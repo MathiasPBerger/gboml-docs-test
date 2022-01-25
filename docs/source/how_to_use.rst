@@ -6,5 +6,5 @@ Two interfaces to GBOML exist, namely a command-line interface and a Python API.
 .. toctree::
    :maxdepth: 3
 
-   ./commandline.rst
+   ./commandline_interface.rst
    ./python_interface.rst

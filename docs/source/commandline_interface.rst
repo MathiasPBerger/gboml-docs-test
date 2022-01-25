@@ -27,13 +27,13 @@ The options are the following :
 
    --matrix
 
- * *Linprog*: the linprog solver can be used with:
+* *Linprog*: the linprog solver can be used with:
 
- .. code-block:: bash
+.. code-block:: bash
 
-    --linprog
+  --linprog
 
-The `linprog <https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.linprog.html>`_ solver for (continuous) linear programming comes with scipy and therefore does not require any installation or license. It is much less powerful than other solver options 
+The `linprog <https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.linprog.html>`_ solver for (continuous) linear programming comes with scipy and therefore does not require any installation or license. It is much less powerful than other solver options
 and is therefore only recommended for testing purposes (e.g., make sure that GBOML was properly installed).
 
 * *Gurobi*: Gurobi can be invoked with:

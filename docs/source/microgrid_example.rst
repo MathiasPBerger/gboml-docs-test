@@ -1,7 +1,7 @@
 Microgrid
 =========
 
-Problem description
+Problem Description
 ~~~~~~~~~~~~~~~~~~~
 
 A grid-connected microgrid is a small-scale and (ideally) self-sufficient electric power system. It consists of an interconnection of electric generators (e.g., solar panels or fossil fuel generators) and loads (the set of electricity consumers). An electrical storage system is often added to the system in order to balance electricity production and consumption in time while limiting the dependence on the distribution network. The configuration of the microgrid system is shown in :numref:`microgrid`.
@@ -16,7 +16,7 @@ A grid-connected microgrid is a small-scale and (ideally) self-sufficient electr
 
 In this section, we study the problem of sizing an electric microgrid similar to the one shown in :numref:`microgrid`. The aim of the sizing problem is to determine the amount of solar panel and battery storage capacity required to minimize the cost of serving pre-specified electricity demand levels over the lifetime of the system. Hence, both investment and operating costs are taken into account. In addition, the electricity consumed in the microgrid and the solar irradiation of the panels are assumed known for a typical representative day.
 
-GBOML implementation
+GBOML Implementation
 ~~~~~~~~~~~~~~~~~~~~
 
 The system is composed of four nodes implementing the behavior of the elements of the microgrid. The first node corresponds to solar panels. The second node represents the dynamics and costs of a battery based on the power flows that charge and discharge it. The third node models the consumer load. The last node represents the electricity distribution network. The power balance of the system is represented via a hyperedge. A skeleton of the optimization problem expressed in the language is provided below. First, the horizon :math:`T` is defined as the number of hours over the lifetime of the system, which is assumed to be twenty years. Then, the four nodes are implemented. Finally, these nodes are linked via a hyperedge.
@@ -187,8 +187,8 @@ Finally, the complete model is obtained by substituting the code blocks of all n
 
 	\min \underset{\text{Investment PV}}{\underbrace{\iota^{PV} \cdot \bar{P}^{PV}}} + \underset{\text{Investment battery}}{\underbrace{\iota^B \cdot \bar{E}^{B}}} + \underset{\text{Power Imports}}{\underbrace{\sum_{t=0}^{T-1} \theta^D \cdot p^{D}_t}} \approx 5.6 \times 10^4.
 
-How to run the example
-~~~~~~~~~~~~~~~~~~~~~~
+Running the Example
+~~~~~~~~~~~~~~~~~~~
 
 There are two ways of running the microgrid example:
 

@@ -1,7 +1,7 @@
 Remote Hub Example
 ==================
 
-Problem description
+Problem Description
 ~~~~~~~~~~~~~~~~~~~
 
 The production of carbon-neutral synthetic fuels in remote areas where high-quality renewable resources are abundant has long been viewed as a means of developing a cost-effective, decarbonised energy supply for countries with limited local renewable potential (see for instance `Hashimoto et al. <https://www.sciencedirect.com/science/article/pii/S0921509399000921?via%3Dihub>`_). The synthesis of carbon-neutral fuels relies on a set of tightly-integrated technologies implementing various chemical processes. In order to properly estimate the cost of the final product, the entire supply chain must be modelled in an integrated fashion, from remote electricity production to product delivery at the destination.
@@ -17,8 +17,8 @@ The modeling framework was leveraged in `a recent paper <https://www.frontiersin
 
 	Remote hub system configuration.
 
-How to run the example
-~~~~~~~~~~~~~~~~~~~~~~
+Running the Example
+~~~~~~~~~~~~~~~~~~~
 
 There are two ways of running the remote hub example:
 
