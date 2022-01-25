@@ -27,7 +27,7 @@ Then, the dependencies of GBOML can be installed by typing the following command
 Installing Solvers
 ------------------
 
-GBOML currently interfaces with Gurobi, CPLEX, Xpress, Cbc/Clp and DSP. Only one of these is required to solve a GBOML problem. Gurobi, CPLEX and Xpress are commercial solvers, while Cbc/Clp is an open-source solver. DSP is an experimental open-source project relying on Gurobi, CPLEX and SCIP to implement generic structure-exploiting algorithms (e.g., Dantzig-Wolfe, dual decomposition and Benders decomposition).
+GBOML currently interfaces with Gurobi, CPLEX, Xpress, Cbc/Clp and DSP. Only one of these is required to solve a GBOML model. Gurobi, CPLEX and Xpress are commercial solvers, while Cbc/Clp is an open-source solver. DSP is an experimental open-source project relying on Gurobi, CPLEX and SCIP to implement generic structure-exploiting algorithms (e.g., Dantzig-Wolfe, dual and Benders decomposition).
 
 Gurobi
 ~~~~~~

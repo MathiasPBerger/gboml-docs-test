@@ -7,7 +7,7 @@ First, the library can be loaded as follows:
 
 .. code-block:: python
 
-   from gboml_script import GbomlGraph
+   from gboml import GbomlGraph
 
 Second, an instance of *GbomlGraph* with a timehorizon of 3 can be created:
 
