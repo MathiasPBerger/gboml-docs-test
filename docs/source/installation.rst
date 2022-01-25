@@ -1,7 +1,7 @@
 Installation
 ============
 
-Two installation options are currently available. First, GBOML can be installed via the pip package manager of Python. Second, GBOML can be installed manually by cloning the git repository.
+Two installation options are currently available. First, GBOML can be installed via the pip package manager and the Python Package Index (PyPI). Second, GBOML can be installed manually by cloning the git repository and installing the requirements.
 In addition, solvers must be installed separately, as described below.
 
 Installation via pip and PyPI
