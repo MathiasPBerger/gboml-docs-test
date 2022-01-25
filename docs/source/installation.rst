@@ -84,9 +84,9 @@ The recommended installation steps work as follows. First, the DSP repository mu
 
 ::
 
-	mkdir your_DSP_directory
-	cd your_DSP_directory
-  git clone --recursive https://github.com/Argonne-National-Laboratory/DSP.git
+	$ mkdir your_DSP_directory
+	$ cd your_DSP_directory
+  $ git clone --recursive https://github.com/Argonne-National-Laboratory/DSP.git
 
 Then, the absolute paths of the directories storing the libraries and header files of the solvers used to build DSP (e.g., Gurobi, CPLEX or SCIP) must be specified in a file named :math:`\texttt{UserConfig.cmake}`, which must be placed in the cloned DSP directory.
 Note that these paths must be consistent with that of the directory in which the solver was installed in the first place. For example, on Mac, CPLEX library files may be stored in */Applications/CPLEX_Studio1210/cplex/lib/x86-64_osx/static_pic*, while header files
