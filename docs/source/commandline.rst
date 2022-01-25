@@ -95,4 +95,4 @@ where :math:`\texttt{<number>}` is an integer, whose default value is 1
 
 	--output <output_filename>
 
-where :math:`\texttt{<output_filename>}` is the output filename once the extension (either CSV or JSON) is chosen. The default output name is the name of the GBOML file with the addition of the date and chosen extension.
+where :math:`\texttt{<output_filename>}` is the output filename without the extension (CSV or JSON). The default output name is the name of the GBOML file with the date and chosen extension.

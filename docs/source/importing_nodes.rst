@@ -1,5 +1,5 @@
-Component Imports
------------------
+Importing Nodes
+---------------
 
 A node can also be declared by importing it from another GBOML file by using the following rules,
 
