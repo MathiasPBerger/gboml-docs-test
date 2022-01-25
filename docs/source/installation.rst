@@ -40,9 +40,9 @@ Gurobi
 
 To use Gurobi, you must first install it. Instructions can be found `here <https://www.gurobi.com/documentation/9.5/quickstart_windows/software_installation_guid.html>`_. Once the solver is installed, the Python API can be downloaded by typing the following commands in a terminal window:
 
-::
+.. code-block:: bash
 
-	$ python -m pip install -i https://pypi.gurobi.com gurobipy
+	python -m pip install -i https://pypi.gurobi.com gurobipy
 
 Other installation options can be found in `this post <https://support.gurobi.com/hc/en-us/articles/360044290292-How-do-I-install-Gurobi-for-Python->`_. Note that a license is also required to use Gurobi. Free licenses can be requested for academics, as discussed in the following `post <https://www.gurobi.com/academia/academic-program-and-licenses/>`_.
 
@@ -50,9 +50,9 @@ CPLEX
 ~~~~~
 To use CPLEX, you must first install it. Instructions can be found `here <https://www.ibm.com/support/pages/downloading-ibm-ilog-cplex-optimization-studio-2010>`_. Once the solver is installed, the Python API can be downloaded by typing the following commands in a terminal window:
 
-::
+.. code-block:: bash
 
-	$ pip install cplex
+	pip install cplex
 
 Note that a license is also required to use CPLEX. Licenses can be obtained for free for academics, as discussed in the following `post <https://www.ibm.com/support/pages/ibm-ilog-optimization-academic-initiative>`_.
 
@@ -60,9 +60,9 @@ Xpress
 ~~~~~~
 To use Xpress, you must first install it. Instructions can be found `here <https://www.fico.com/fico-xpress-optimization/docs/latest/insight_quick_install/GUID-2D3D6579-9CCA-4605-8C00-E91B6FB846EB.html>`_. Once the solver is installed, the Python API can be downloaded by typing the following commands in a terminal window:
 
-::
+.. code-block:: bash
 
-	$ pip install xpress
+	pip install xpress
 
 Additional information can be found `here <https://www.fico.com/fico-xpress-optimization/docs/latest/solver/optimizer/python/HTML/chIntro_sec_secInstall.html>`_. Note that a license is also required to use Xpress.
 
@@ -71,9 +71,9 @@ Cbc/Clp
 
 To use Cbc or Clp, you must first install them. Instructions can be found `here <https://github.com/coin-or/Cbc>`_. The CyLP package is used to interface with the solver. This package can be installed by typing the following commands in a terminal window:
 
-::
+.. code-block:: bash
 
-	$ pip install cylp
+	pip install cylp
 
 DSP
 ~~~
@@ -82,11 +82,11 @@ To use DSP, you must first install it. At present, DSP developers recommend inst
 
 The recommended installation steps work as follows. First, the DSP repository must be cloned into a directory of choice (named *your_DSP_directory* in this example). This can be achieved by typing the following commands in a terminal window:
 
-::
+.. code-block:: bash
 
-		$ mkdir your_DSP_directory
-		$ cd your_DSP_directory
-    $ git clone --recursive https://github.com/Argonne-National-Laboratory/DSP.git
+		mkdir your_DSP_directory
+		cd your_DSP_directory
+    git clone --recursive https://github.com/Argonne-National-Laboratory/DSP.git
 
 Then, the absolute paths of the directories storing the libraries and header files of the solvers used to build DSP (e.g., Gurobi, CPLEX or SCIP) must be specified in a file named :math:`\texttt{UserConfig.cmake}`, which must be placed in the cloned DSP directory.
 Note that these paths must be consistent with that of the directory in which the solver was installed in the first place. For example, on Mac, CPLEX library files may be stored in */Applications/CPLEX_Studio1210/cplex/lib/x86-64_osx/static_pic*, while header files
@@ -95,11 +95,11 @@ on the library path (e.g., by setting the value of the DYLD_LIBRARY_PATH environ
 
 The next installation steps make use of `cmake <https://cmake.org/install/>`_ and make to build the DSP executable and library. Once cmake is installed, the following commands can be typed in a terminal window, starting in the cloned DSP directory:
 
-::
+.. code-block:: bash
 
-    $ mkdir build
-    $ cd build
-    $ cmake ..
-    $ make
+    mkdir build
+    cd build
+    cmake ..
+    make
 
 If the make worked properly, an executable called runDsp and a shared library named libDsp should be created in the *src* subfolder of the build directory. Additional information can be found `here <https://github.com/Argonne-National-Laboratory/DSP/blob/master/docs/install.md>`_.
