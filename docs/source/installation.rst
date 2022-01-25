@@ -80,13 +80,18 @@ DSP
 
 To use DSP, you must first install it. At present, DSP developers recommend installing it on a Mac or Linux machine. Installing DSP with the Windows Subsystem Linux UBUNTU 18.04 distribution was tested and found to work too.
 
-The recommended installation steps work as follows. First, the DSP repository must be cloned into a directory of choice (named *your_DSP_directory* in this example). This can be achieved by typing the following commands in a terminal window:
+The recommended installation steps work as follows. First, the DSP repository must be cloned into a directory of choice. This can be achieved by creating a directory named, e.g., *your_DSP_directory*:
 
-::
+.. code-block:: bash
 
-		$ mkdir your_DSP_directory
-		$ cd your_DSP_directory
-    $ git clone --recursive https://github.com/Argonne-National-Laboratory/DSP.git
+	mkdir your_DSP_directory
+	cd your_DSP_directory
+
+and cloning the DSP repository recursively:
+
+.. code-block:: bash
+
+	git clone --recursive https://github.com/Argonne-National-Laboratory/DSP.git
 
 Then, the absolute paths of the directories storing the libraries and header files of the solvers used to build DSP (e.g., Gurobi, CPLEX or SCIP) must be specified in a file named :math:`\texttt{UserConfig.cmake}`, which must be placed in the cloned DSP directory.
 Note that these paths must be consistent with that of the directory in which the solver was installed in the first place. For example, on Mac, CPLEX library files may be stored in */Applications/CPLEX_Studio1210/cplex/lib/x86-64_osx/static_pic*, while header files
