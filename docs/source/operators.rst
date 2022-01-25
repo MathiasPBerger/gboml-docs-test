@@ -4,10 +4,8 @@ Operators
 GBOML provides the following operators for elementary floating-point arithmetic, which are listed in order of decreasing precedence:
 
 #. Exponentiation: :math:`\texttt{**}`
-#. Multiplication: :math:`\texttt{*}`
-#. Division: :math:`\texttt{/}`
-#. Addition: :math:`\texttt{+}`
-#. Subtraction: :math:`\texttt{-}`
+#. Multiplication: :math:`\texttt{*}` and Division: :math:`\texttt{/}`
+#. Addition: :math:`\texttt{+}` and Subtraction: :math:`\texttt{-}`
 
 Operator precedence can be overridden by using parentheses :math:`\texttt{(}`` and :math:`\texttt{)}`.
 Besides these elementary arithmetic operators, GBOML provides the modulo operator and the sum operator as native functions:
