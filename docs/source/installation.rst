@@ -82,7 +82,7 @@ To use DSP, you must first install it. At present, DSP developers recommend inst
 
 The recommended installation steps work as follows. First, the DSP repository must be cloned into a directory of choice (named *your_DSP_directory* in this example). This can be achieved by typing the following commands in a terminal window:
 
-.. code-block:: bash
+::
 
 	mkdir your_DSP_directory
 	cd your_DSP_directory
