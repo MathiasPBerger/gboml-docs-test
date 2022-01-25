@@ -1,7 +1,50 @@
 Hierarchical Models
 -------------------
 
-In the hierarchical hypergraph abstraction underpinning the GBOML language, each node can itself be viewed as a hierarchical hypergraph. Nodes may therefore be constructed from *children* nodes (also referred to as *sub-nodes*) linked by *sub-hyperedges*.
+In the hierarchical hypergraph abstraction underpinning the GBOML language, each node can itself be viewed as a hierarchical hypergraph. Nodes may therefore be constructed from *children* nodes (also referred to as *sub-nodes*) linked by *sub-hyperedges*. 
+
+The *sub-nodes* and *sub_hyperedges* are defined between the :math:`\texttt{#PARAMETERS}` and :math:`\texttt{#VARIABLES}` block. A hierarchical block :math:`\texttt{#NODE}` is structured as follows:
+
+.. code-block:: c
+
+   #NODE <parent node identifier>
+      #PARAMETERS
+      // parent parameter definitions
+      
+      #NODE <sub-node identifier>
+         #PARAMETERS
+         // sub-node parameter definitions
+         #VARIABLES
+         // sub-node variable definitions
+         #CONSTRAINTS
+         // sub-node constraint definitions
+         #OBJECTIVES
+         // sub-node objective definitions
+      
+      #NODE <sub-node identifier>
+         #PARAMETERS
+         // sub-node parameter definitions
+         #VARIABLES
+         // sub-node variable definitions
+         #CONSTRAINTS
+         // sub-node constraint definitions
+         #OBJECTIVES
+         // sub-node objective definitions
+      
+      #HYPEREDGE <sub-hyperedge identifier>
+         #PARAMETERS
+         // sub-hyperedge parameter definitions
+         #CONSTRAINTS
+         // sub-hyperedge constraint definitions
+      
+      #VARIABLES
+      // parent variable definitions
+      
+      #CONSTRAINTS
+      // parent constraint definitions
+      
+      #OBJECTIVES
+      // parent objective definitions
 
 Additional syntax rules must therefore be introduced to enable this feature, as discussed below.
 
@@ -18,9 +61,20 @@ Given these syntax rules, the following is a valid example of hierarchical param
 
  .. code-block:: c
 
-   #PARAMETERS
-   gravity       = 9.81;
-   speed         = import "speed.txt";
+   #NODE A
+      
+      #PARAMETERS
+         parameter_A = 1;
+      
+      #NODE B
+      
+         #PARAMETERS
+            parameter_B = 2;
+
+         #NODE C
+            parameter_C = 3;
+            sum_parameters = A.parameter_A + parameter_C + B.parameter_B; // = 6
+ 
 
 Variables
 =========
@@ -41,18 +95,53 @@ Given these syntax rules, the following is a valid example of hierarchical varia
 
  .. code-block:: c
 
-   #PARAMETERS
-   gravity       = 9.81;
-   speed         = import "speed.txt";
+   #NODE A 
+   
+      #NODE B
+      
+         #VARIABLES
+            internal : x[10];
+            ...
+      #NODE C
 
-Constraints
-===========
+         #VARIABLES
+            internal : x[10];
 
-TBA
 
-Objectives
-==========
+      #VARIABLES
+         internal : y[10] <- B.x[10];
+         external : z[10] <- C.x[10];
 
-TBA
+A full valid, hierarchical GBOML is given as follows, 
+ .. code-block:: c
+   #TIMEHORIZON T = 2;
 
-Examples should be added to illustrate these features
+   #NODE A 
+      #PARAMETERS 
+         parameter_A = 1;
+
+      #NODE B
+         #PARAMETERS
+            parameter_B = 1+A.parameter_A;
+         #VARIABLES
+            internal : x[10];
+         #CONSTRAINTS
+            x[t] >= parameter_B;
+            
+      #NODE C
+         #PARAMETERS
+            parameter_C = 2+A.parameter_A;
+         #VARIABLES
+            internal : x[10];
+         #CONSTRAINTS
+            x[t] >= parameter_C;
+
+      #VARIABLES
+         internal : y[10] <- B.x[10];
+         external : z[10] <- C.x[10];
+
+      #CONSTRAINTS
+         y[t]+z[t] >= 6;
+
+      #OBJECTIVES
+         min: y[t]+z[t];
