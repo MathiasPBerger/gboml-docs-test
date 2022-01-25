@@ -9,9 +9,9 @@ Installation via pip and PyPI
 
 GBOML can be installed via pip and the Python Package Index by typing the following commands in a terminal window:
 
-::
+:: code-block:: bash
 
-	$ pip install gboml
+	pip install gboml
 
 All dependencies (numpy, scipy and ply) will be automatically installed and the package should be ready for use.
 
@@ -20,15 +20,15 @@ Manual Installation
 
 The git repository can be found `here <https://gitlab.uliege.be/smart_grids/public/gboml>`_. The repository can be cloned by typing the following commands in a terminal window:
 
-::
+:: code-block:: bash
 
-	$ git clone https://gitlab.uliege.be/smart_grids/public/gboml
+	git clone https://gitlab.uliege.be/smart_grids/public/gboml
 
 Then, the dependencies of GBOML can be installed by typing the following commands:
 
-::
+:: code-block:: bash
 
-	$ pip install ./
+	pip install ./
 
 Installing Solvers
 ------------------

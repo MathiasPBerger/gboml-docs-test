@@ -1,6 +1,8 @@
 Command Line Interface
 ======================
 
+The GBOML parser can be called from the command line by typing the following commands in a terminal window:
+
 .. code-block:: bash
 
    gboml <file> <options>
