@@ -1,20 +1,13 @@
-from compiler import parse_file, semantic, check_program_linearity, matrix_generation_a_b, matrix_generation_c, \
+from .compiler import parse_file, semantic, check_program_linearity, matrix_generation_a_b, matrix_generation_c, \
     factorize_program, extend_factor
-from compiler.classes import Parameter, Expression, Node, Hyperlink, Time, Program
-from compiler.utils import error_, move_to_directory
+from .compiler.classes import Parameter, Expression, Node, Hyperedge, Time, Program
+from .compiler.utils import error_, move_to_directory
+from .solver_api import cplex_solver, gurobi_solver, clp_solver, dsp_solver, xpress_solver
+
 from enum import Enum
 import os
-from solver_api import cplex_solver, gurobi_solver, clp_solver
 from copy import deepcopy
 import numpy as np
-
-
-# TODO
-# first check the whole thing
-# Structure and problem print
-# Solve the whole thing
-# Hyperedge problem ?
-
 
 def test_gboml_python_interface():
     timehorizon_considered = 10
@@ -109,7 +102,7 @@ class GbomlGraph:
     """
     def __init__(self, timehorizon=1):
         """
-        __init__ initializes GbomlGraph instance
+        bound method initializing a GbomlGraph instance
 
         Args:
            timehorizon (int) : length of optimization horizon considered
@@ -128,7 +121,7 @@ class GbomlGraph:
 
     def __add_node(self, to_add_node):
         """
-        __add_node adds node to GbomlGraph instance
+        bound method adding a node to a GbomlGraph instance
 
         Args:
            to_add_node (Node) : node that should be added
@@ -144,10 +137,10 @@ class GbomlGraph:
 
     def __add_hyperedge(self, to_add_hyperedge):
         """
-        __add_hyperedge adds hyperedge to GbomlGraph instance
+        bound method adding a hyperedge to a GbomlGraph instance
 
         Args:
-           to_add_hyperedge (Hyperlink) : hyperedge that should be added
+           to_add_hyperedge (Hyperedge) : hyperedge that should be added
 
         :raises: re-use of identifier error
 
@@ -159,16 +152,13 @@ class GbomlGraph:
         self.node_hyperedge_dict[hyperedge_name] = to_add_hyperedge
         self.list_hyperedges.append(to_add_hyperedge)
 
-    def __get__(self, *node_or_hyperedge_name, error=False, wanted_type=None):
+    def __get__(self, *node_or_hyperedge_name, wanted_type=None):
         """
-        __get__ returns node(s) or hyperedge(s) identified by *node_or_hyperedge_name
+        bound method returning a node or a hyperedge identified by its name and those of its ancestors
 
         Args:
-           *node_or_hyperedge_name (list <str>) : name of node(s) or hyperedge(s) to retrieve
-
-           error (bool) : if identifier not found, an error is raised
-
-           wanted_type (Node or Hyperlink) : returned type expected
+           *node_or_hyperedge_name (list <str>) : list of ancestor node names and node or hyperedge name (used for depth-first traversal)
+           wanted_type (Node or Hyperedge) : returned type (either Node or Hyperedge)
 
         :raises: not found error
 
@@ -180,12 +170,12 @@ class GbomlGraph:
         for i, name in enumerate(node_or_hyperedge_name):
             if name in current_layer:
                 retrieved_object = current_layer[node_or_hyperedge_name]
-                if i < depth_search-1 and isinstance(retrieved_object, Hyperlink):
-                    error_("Hyperlinks do not possess subnodes or subhyperedges")
+                if i < depth_search-1 and isinstance(retrieved_object, Hyperedge):
+                    error_("Hyperedges do not possess subnodes or subhyperedges")
                 elif i < depth_search-1:
                     current_layer = retrieved_object.get_internal_dict()
 
-            elif error:
+            else:
                 error_("Unknown node or hyperedge named " + str(node_or_hyperedge_name))
 
         if wanted_type and not isinstance(retrieved_object, wanted_type):
@@ -196,7 +186,7 @@ class GbomlGraph:
 
     def add_nodes_in_model(self, *nodes):
         """
-        add_nodes_in_model adds nodes to GbomlGraph instance
+        bound method adding nodes to a GbomlGraph instance
 
         Args:
             nodes (list <Nodes>) : list of node objects to be added
@@ -207,10 +197,10 @@ class GbomlGraph:
 
     def add_hyperedges_in_model(self, *hyperedges):
         """
-        add_hyperedges_in_model adds hyperedges to GbomlGraph instance
+        bound method adding hyperedges to a GbomlGraph instance
 
         Args:
-            hyperedges (list <Hyperlink>) : list of hyperedge objects to be added
+            hyperedges (list <Hyperedge>) : list of hyperedge objects to be added
 
         """
         for hyperedge in hyperedges:
@@ -218,7 +208,7 @@ class GbomlGraph:
 
     def set_timehorizon(self, value):
         """
-        set_timehorizon sets time horizon to specified value
+        bound method setting the time horizon to a specified value
 
         Args:
            value (int) : length of time horizon considered
@@ -228,7 +218,7 @@ class GbomlGraph:
 
     def get_timehorizon(self):
         """
-        get_timehorizon returns time horizon value
+        bound method returning the value of the time horizon
 
         Returns:
            value (int) : length of time horizon considered
@@ -239,7 +229,7 @@ class GbomlGraph:
 
     def build_model(self, nb_processes: int = 1):
         """
-        build_model generates optimization model in matrix form
+        bound method generating the matrices of the optimization model
 
         Args:
            nb_processes (int) : number of processes used for model generation
@@ -267,87 +257,105 @@ class GbomlGraph:
 
     def __solve(self, solver_function):
         """
-        __solve solves the optimization model
+        bound method solving the optimization model
 
         Args:
-           solver_function (function) : function calling solver
+           solver_function (function) : function calling a solver
 
         Returns:
-            solution (numpy.ndarray) -> flattened solution
-
-            objective (float) -> objective value
-
-            status -> solution status
-
-            solver_info (dict) -> dictionary storing solver information
+            solution (numpy.ndarray) : flattened solution
+            objective (float) : objective value
+            status (str) : solver exit status
+            solver_info (dict) : dictionary storing solver information
 
         """
         vector_c = np.asarray(self.vector_c.sum(axis=0), dtype=float)
         objective_offset = float(self.indep_term_c.sum())
         return solver_function(self.matrix_a, self.matrix_b, vector_c, objective_offset, self.program.get_tuple_name())
 
-    def solve_cplex(self):
+    def solve_gurobi(self):
         """
-        solve_cplex solves the flattened optimization model with CPLEX
+        bound method solving the flattened optimization model with Gurobi
 
         Returns:
-            solution (numpy.ndarray) -> flattened solution
+            solution (numpy.ndarray) : flattened solution
+            objective (float) : objective value
+            status (str) : solver exit status
+            solver_info (dict) : dictionary storing solver information
 
-            objective (float) -> objective value
+        """
+        return self.__solve(gurobi_solver)
 
-            status -> solution status
+    def solve_cplex(self):
+        """
+        bound method solving the flattened optimization model with CPLEX
 
-            solver_info (dict) -> dictionary storing solver information
+        Returns:
+            solution (numpy.ndarray) : flattened solution
+            objective (float) : objective value
+            status (str) : solver exit status
+            solver_info (dict) : dictionary storing solver information
 
         """
 
         return self.__solve(cplex_solver)
 
-    def solve_gurobi(self):
+    def solve_xpress(self):
         """
-        solve_gurobi solves the flattened optimization problem with Gurobi
+        bound method solving the flattened optimization model with Xpress
 
         Returns:
-            solution (numpy.ndarray) -> flattened solution
-
-            objective (float) -> objective value
-
-            status -> solution status
-
-            solver_info (dict) -> dictionary storing solver information
+            solution (numpy.ndarray) : flattened solution
+            objective (float) : objective value
+            status (str) : solver exit status
+            solver_info (dict) : dictionary storing solver information
 
         """
-        return self.__solve(gurobi_solver)
+        return self.__solve(xpress_solver)
 
     def solve_clp(self):
         """
-        solve_clp solves the flattened optimization problem with Clp/Cbc
+        bound method solving the flattened optimization problem with Clp/Cbc
 
         Returns:
-            solution (numpy.ndarray) -> flattened solution
-
-            objective (flat) -> float of the objective value
-
-            status -> solution status
-
-            solver_info -> dictionary of solver information
+            solution (numpy.ndarray) : flattened solution
+            objective (flat) : float of the objective value
+            status (str) : solver exit status
+            solver_info (dict) : dictionary storing solver information
 
         """
         return self.__solve(clp_solver)
 
+    def solve_dsp(self, algorithm="dw"):
+        """
+        bound method solving the optimization model with DSP
+
+        Args:
+            algorithm (str): algorithm selected ("dw" for Dantzig-Wolfe and "de" for extensive form solve)
+
+        Returns:
+            solution (numpy.ndarray) : flattened solution
+            objective (float ) : objective value
+            status (str) : solver exit status
+            solver_info (dict) : dictionary of solver information
+
+        """
+        vector_c = np.asarray(self.vector_c.sum(axis=0), dtype=float)
+        objective_offset = float(self.indep_term_c.sum())
+        return dsp_solver(self.matrix_a, self.matrix_b, vector_c, objective_offset, self.program.get_tuple_name(),
+                          program.get_first_level_constraints_decomposition(), algorithm=algorithm)
+
     @staticmethod
     def import_all_nodes_and_edges(filename):
         """
-        import_all_nodes_and_edges is a static method that imports all nodes and hyperedges
-        contained in a file
+        static method importing all nodes and hyperedges contained in a file
 
         Args:
            filename (str) : path to GBOML input file
 
         Returns:
-            all_nodes (list) -> list of nodes contained in file
-
-            all_hyperedges (list) -> list of hyperedges contained in file
+            all_nodes (list) : list of nodes contained in file
+            all_hyperedges (list) : list of hyperedges contained in file
 
         """
         old_dir, cut_filename = move_to_directory(filename)
@@ -365,18 +373,16 @@ class GbomlGraph:
         return to_return_nodes, to_return_edges
 
     @staticmethod
-    def import_node(filename: str, *imported_node_identifier: str, new_node_name: str = "", copy=False):
+    def import_node(filename: str, *imported_node_identifier: str, new_node_name: str = "", copy=True):
         """
-        import_node is a static method that imports a node from a GBOML input file
+        static method importing a node from a GBOML input file
 
         Args:
            filename (str) : path to GBOML input file
-
-           imported_node_identifier (list <str>) : identifier of imported node (specified layer by layer)
-
+           imported_node_identifier (list <str>) : list of ancestor node names and node name (used for depth-first traversal)
            new_node_name (str) : new identifier of node (for re-naming purposes, optional)
-
-           copy (bool) : predicate of whether to copy the node or not
+           copy (bool) : keyword argument defining whether a shallow or deep copy of the imported node is created
+                         (defaults to True, which produces a deepcopy)
 
         Returns:
             imported_node (Node) : imported node
@@ -404,21 +410,18 @@ class GbomlGraph:
 
     @staticmethod
     def import_hyperedge(filename: str, *imported_hyperedge_identifier: str,
-                         new_hyperedge_name: str = "", copy=False):
+                         new_hyperedge_name: str = "", copy=True):
         """
-        import_hyperedge is a static method that imports a hyperedge from a GBOML input file
+        static method importing a hyperedge from a GBOML input file
 
         Args:
            filename (str) : path to GBOML input file
-
-           imported_hyperedge_identifier (list <str>) : identifier of imported hyperedge (specified layer by layer)
-
+           imported_hyperedge_identifier (list <str>) : list of ancestor node names and hyperedge name (used for depth-first traversal)
            new_hyperedge_name (str) : new hyperedge identifier (for re-naming purposes, optional)
-
-           copy (bool) : predicate of whether to copy the hyperedge or not
+           copy (bool) : keyword argument defining whether a shallow or deep copy of the imported node is created (defaults to True, which produces a deepcopy)
 
         Returns:
-            imported_hyperedge (Hyperlink) : imported hyperedge
+            imported_hyperedge (Hyperedge) : imported hyperedge
 
         """
         old_dir, cut_filename = move_to_directory(filename)
@@ -428,7 +431,7 @@ class GbomlGraph:
         if imported_hyperedge is None:
             error_("ERROR: In file " + str(filename) + " there is no node named " + str(imported_hyperedge_identifier))
 
-        if type(imported_hyperedge) == Hyperlink:
+        if type(imported_hyperedge) == Hyperedge:
             error_("ERROR: A hyperedge named " + imported_node_identifier + " is imported as type node ")
 
         if new_hyperedge_name == "":
@@ -444,30 +447,27 @@ class GbomlGraph:
     @staticmethod
     def rename(node_or_hyperedge, new_name):
         """
-        rename is a static method that renames a node or hyperedge
+        static method re-naming a node or hyperedge
 
         Args:
-           node_or_hyperedge (Node/Hyperlink) : node or nyperedge to be re-named
-
+           node_or_hyperedge (Node/Hyperedge) : node or nyperedge to be re-named
            new_name (str) : new name
 
         """
         node_or_hyperedge.rename(new_name)
 
     @staticmethod
-    def get_inside_node(in_node, *searched_node: str, wanted_type=None):
+    def get_object_in_node(in_node, *node_identifier: str, wanted_type=None):
         """
-        get_inside_node is a static method that returns a sub-node or sub-hyperedge of a given node
+        static method returning a node or a hyperedge given an ancestor node
 
         Args:
            in_node (Node) : node to which the sub-node is expected to belong
-
-           searched_node (list <str>) : The name of the sub-node searched (layer by layer)
-
-           wanted_type (Class Type) : Either Node or Hyperlink depending on the type of the object considered
+           node_identifier (list <str>) : list of ancestor node names, with first name corresponding to first sub-node and last name corresponding to node to retrieve
+           wanted_type (Class Type) : either Node or Hyperedge depending on the type of the object considered
 
         Returns:
-            retrieved_object (Node/Hyperlink) : The node/hyperedge searched
+            retrieved_object (Node/Hyperedge) : retrieved node or hyperedge
 
         """
         current_layer = in_node.get_internal_dict()
@@ -476,12 +476,12 @@ class GbomlGraph:
         for i, name in enumerate(searched_node):
             if name in current_layer:
                 retrieved_object = current_layer[name]
-                if i < depth_search - 1 and isinstance(retrieved_object, Hyperlink):
-                    error_("Hyperlink objects do not possess subnodes or subhyperedges")
+                if i < depth_search - 1 and isinstance(retrieved_object, Hyperedge):
+                    error_("Hyperedge objects do not possess subnodes or subhyperedges")
                 elif i < depth_search - 1:
                     current_layer = retrieved_object.get_internal_dict()
 
-            elif error:
+            else:
                 error_("Unknown node or hyperedge named " + str(node_or_hyperedge_name))
 
         if wanted_type and not isinstance(retrieved_object, wanted_type):
@@ -493,11 +493,10 @@ class GbomlGraph:
     @staticmethod
     def add_sub_node(node_to_add, in_node):
         """
-        add_sub_node is a static method that adds a sub-node to a node
+        static method adding a child node to a given node
 
         Args:
            node_to_add (Node) : sub-node to add
-
            in_node (Node) : node to which sub-node should be added
 
         """
@@ -507,11 +506,10 @@ class GbomlGraph:
     @staticmethod
     def add_sub_hyperedge(hyperedge_to_add, in_node):
         """
-        add_sub_hyperedge is a static method that adds a sub-hyperedge to a node
+        static method adding a sub-hyperedge to a given node
 
         Args:
-           hyperedge_to_add (Hyperlink) : sub-hyperedge to add
-
+           hyperedge_to_add (Hyperedge) : sub-hyperedge to add
            in_node (Node) : node to which sub-hyperedge should be added
 
         """
@@ -521,13 +519,11 @@ class GbomlGraph:
     @staticmethod
     def redefine_parameter_from_value(node_or_hyperedge, parameter_name: str, value: float):
         """
-        redefine_parameter_with_value is a static method that redefines a parameter with a scalar value
+        static method re-defining the value of a scalar parameter
 
         Args:
-           node_or_hyperedge (Node/Hyperlink) : Node/Hyperedge where the parameter will be redefined
-
+           node_or_hyperedge (Node/Hyperedge) : Node/Hyperedge where the parameter will be redefined
            parameter_name (str) : parameter name
-
            value (float) : new value of parameter
 
         """
@@ -538,14 +534,12 @@ class GbomlGraph:
     @staticmethod
     def redefine_parameter_from_values(node_or_hyperedge, parameter_name: str, values: list):
         """
-        redefine_parameter_from_value is a static method that re-defines a vector parameter from a list of values
+        static method re-defining parameter values from a list of values
 
         Args:
-           node_or_hyperedge (Node/Hyperlink) : Node/Hyperedge where the parameter will be redefined
-
-           parameter_name (str) : Name of the parameter considered
-
-           values (list<float>) : list of values for redefinition
+           node_or_hyperedge (Node/Hyperedge) : Node/Hyperedge to which the parameter that should be re-defined belongs
+           parameter_name (str) : name of the parameter considered
+           values (list<float>) : list of updated parameter values
 
         """
 
@@ -560,13 +554,11 @@ class GbomlGraph:
     @staticmethod
     def redefine_parameter_from_file(node_or_hyperedge, parameter_name: str, filename):
         """
-        redefine_parameter_from_file is a static method that redefines parameter values from a CSV file
+        static method re-defining parameter values from a CSV file
 
         Args:
-           node_or_hyperedge (Node/Hyperlink) : Node/Hyperedge in which the parameter should be re-defined
-
+           node_or_hyperedge (Node/Hyperedge) : Node/Hyperedge in which the parameter should be re-defined
            parameter_name (str) : parameter name
-
            filename (str) : name of CSV file
 
         """
@@ -577,15 +569,12 @@ class GbomlGraph:
     @staticmethod
     def redefine_parameters_from_list(node_or_hyperedge, list_parameters: list = [], list_values: list = []):
         """
-        redefine_parameters_from_list is a static method that re-defines the values of scalar parameters from a list.
-        This functions generates tuples of re-defined parameters : [(list_parameters[i], list_values[i]) for every i in len(list_parameters)
+        static method re-defining parameter values from a list
 
         Args:
-           node_or_hyperedge (Node/Hyperlink) : Node/Hyperedge in which parameters should be re-defined
-
+           node_or_hyperedge (Node/Hyperedge) : Node/Hyperedge in which parameters should be re-defined
            list_parameters (list <str>) : list of parameter names
-
-           list_values (list <float/list<float>/str>) : list of parameter values
+           list_values (list <float> | list <float> | <str>) : list of parameter values
 
         """
         assert len(list_parameters) == len(list_values), "Unmatching size between list or parameters and list of values"
@@ -604,11 +593,10 @@ class GbomlGraph:
     @staticmethod
     def redefine_parameters_from_keywords(node_or_hyperedge, **kwargs):
         """
-        redefine_parameters is a static method that re-defines parameter values from keyword arguments.
+        static method re-defining parameter values from keyword arguments
 
         Args:
-           node_or_hyperedge (Node/Hyperlink) : Node/Hyperedge in which parameters should be re-defined
-
+           node_or_hyperedge (Node/Hyperedge) : Node/Hyperedge in which parameters should be re-defined
            kwargs (tuple <str, value>): tuple of parameters name, value
         """
         for parameter_name, value in kwargs.items():
@@ -624,13 +612,11 @@ class GbomlGraph:
     @staticmethod
     def change_type_variable_in_node(node, variable_name: str, variable_type):
         """
-        change_type_variable_in_node is a static method that changes the type of a variable
+        static method changing the type of a variable
 
         Args:
            node (Node) : node to which variable that should be modified belongs
-
            variable_name (str) : variable name
-
            variable_name (VariableType) : new variable type (either External or Internal)
         """
         variable_tuple = [variable_name, variable_type.value, 0]
@@ -639,11 +625,10 @@ class GbomlGraph:
     @staticmethod
     def remove_constraint(node_or_hyperedge, *to_delete_constraints_names):
         """
-        remove_constraint is a static method that removes named constraints from a node/hyperedge
+        static method removing constraints from a node/hyperedge
 
         Args:
-           node_or_hyperedge (Node/Hyperlink) : Node/Hyperlink from which constraints should be removed
-
+           node_or_hyperedge (Node/Hyperedge) : Node/Hyperedge from which constraints should be removed
            to_delete_constraints_names (list <str>) : names of constraints to remove
         """
         constraints = node_or_hyperedge.get_constraints()
@@ -661,11 +646,10 @@ class GbomlGraph:
     @staticmethod
     def remove_objective_in_node(node, *to_delete_objectives_names):
         """
-        remove_objective_in_node is a static method that removes named objectives from a node
+        static method removing objectives from a node
 
         Args:
-           node_or_hyperedge (Node/Hyperlink) : node from which objectives should be removed
-
+           node_or_hyperedge (Node/Hyperedge) : node from which objectives should be removed
            to_delete_objectives_names (list <str>) : names of objectives to remove
         """
         objectives = node.get_objectives()
@@ -683,13 +667,11 @@ class GbomlGraph:
     @staticmethod
     def change_node_name_in_hyperedge(hyperedge, old_node_name, new_node_name):
         """
-        change_node_name_in_hyperedge is a static method that changes name of node in hyperedge
+        static method changing the name of a node appearing in the constraints of a given hyperedge
 
         Args:
-           hyperedge (Hyperlink) : Hyperlink in which node names should be changed
-
+           hyperedge (Hyperedge) : Hyperedge in which node names should be changed
            old_node_name (str) : previous node name
-
            new_node_name (str) : new node name
         """
         change_tuple = [old_node_name, new_node_name, None]
