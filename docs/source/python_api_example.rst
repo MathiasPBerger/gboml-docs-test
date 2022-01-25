@@ -65,7 +65,7 @@ The full code is written as follows,
 
 .. code-block:: python
 
-   from gboml_script import GbomlGraph
+   from gboml import GbomlGraph
 
    timehorizon = 3
    gboml_model = GbomlGraph(timehorizon)

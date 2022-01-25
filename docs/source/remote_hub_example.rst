@@ -26,7 +26,7 @@ There are two ways of running the remote hub example:
 
 .. code-block:: bash
 
-	gboml examples/remote_energy_supply_chain/remote_hub_nowacc.txt --cplex --json -o remote_hub_example
+	gboml examples/remote_energy_supply_chain/remote_hub_nowacc.txt --cplex --json --output remote_hub_example
 
 This will solve the remote hub problem using CPLEX and save the solution in "examples/remote_energy_supply_chain/remote_hub_example.json".
 

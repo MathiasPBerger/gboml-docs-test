@@ -9,4 +9,4 @@ These features are discussed in the following sections:
    :maxdepth: 4
 
    ./hierarchical_models.rst
-   ./component_imports.rst
+   ./importing_components.rst

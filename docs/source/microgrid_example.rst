@@ -196,7 +196,7 @@ There are two ways of running the microgrid example:
 
 .. code-block:: c
 
-	gboml examples/microgrid/microgrid.txt --cplex --json -o microgrid_example
+	gboml examples/microgrid/microgrid.txt --cplex --json --output microgrid_example
 
 This will solve the microgrid problem using CPLEX and save the solution in "examples/microgrid/microgrid_example.json".
 

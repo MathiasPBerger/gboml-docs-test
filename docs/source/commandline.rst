@@ -27,6 +27,15 @@ The options are the following :
 
    --matrix
 
+ * *Linprog*: the linprog solver can be used with:
+
+ .. code-block:: bash
+
+    --linprog
+
+The `linprog <https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.linprog.html>`_ solver for (continuous) linear programming comes with scipy and therefore does not require any installation or license. It is much less powerful than other solver options 
+and is therefore only recommended for testing purposes (e.g., make sure that GBOML was properly installed).
+
 * *Gurobi*: Gurobi can be invoked with:
 
 .. code-block:: bash
@@ -63,7 +72,7 @@ The options are the following :
 
    --dsp_dw
 
-* *CSV*: the solution can printed to a CSV file with:
+* *CSV*: the solution can be printed to a CSV file with:
 
 .. code-block:: bash
 
@@ -75,7 +84,7 @@ The options are the following :
 
    --json
 
-* *detailed Json*: the solution along with auxiliary information provided by the solver (e.g., dual variables, slacks or basis ranges) can be printed to a JSON file with:
+* *Detailed JSON*: the solution provided by the solver along with auxiliary information (e.g., dual variables, slacks or basis ranges) can be printed to a JSON file with:
 
 .. code-block:: bash
 
@@ -89,7 +98,7 @@ The options are the following :
 
 where :math:`\texttt{<number>}` is an integer, whose default value is 1
 
-* *output*: the name of the output file can be defined with:
+* *Output*: the name of the output file can be defined with:
 
 .. code-block:: bash
 
