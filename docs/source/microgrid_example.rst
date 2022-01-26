@@ -1,5 +1,5 @@
-Microgrid
-=========
+Microgrid Example
+-----------------
 
 Problem Description
 ~~~~~~~~~~~~~~~~~~~

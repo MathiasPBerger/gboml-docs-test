@@ -1,5 +1,5 @@
 Python API Example
-~~~~~~~~~~~~~~~~~~
+------------------
 
 The following example illustrates various functions defined in the Python API and its *GbomlGraph* class.
 

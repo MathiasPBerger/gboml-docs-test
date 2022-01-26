@@ -1,5 +1,5 @@
 Remote Hub Example
-==================
+------------------
 
 Problem Description
 ~~~~~~~~~~~~~~~~~~~

@@ -8,43 +8,41 @@ Sub-nodes and sub-hyperedges are defined between the :math:`\texttt{#PARAMETERS}
 .. code-block:: c
 
    #NODE <parent node identifier>
-      #PARAMETERS
-      // parent parameter definitions
+   #PARAMETERS
+   // parent parameter definitions
 
       #NODE <sub-node identifier 1>
-         #PARAMETERS
-         // sub-node 1 parameter definitions
-         #VARIABLES
-         // sub-node 1 variable definitions
-         #CONSTRAINTS
-         // sub-node 1 constraint definitions
-         #OBJECTIVES
-         // sub-node 1 objective definitions
+      #PARAMETERS
+      // sub-node 1 parameter definitions
+      #VARIABLES
+      // sub-node 1 variable definitions
+      #CONSTRAINTS
+      // sub-node 1 constraint definitions
+      #OBJECTIVES
+      // sub-node 1 objective definitions
 
       #NODE <sub-node identifier 2>
-         #PARAMETERS
-         // sub-node 2 parameter definitions
-         #VARIABLES
-         // sub-node 2 variable definitions
-         #CONSTRAINTS
-         // sub-node 2 constraint definitions
-         #OBJECTIVES
-         // sub-node 2 objective definitions
+      #PARAMETERS
+      // sub-node 2 parameter definitions
+      #VARIABLES
+      // sub-node 2 variable definitions
+      #CONSTRAINTS
+      // sub-node 2 constraint definitions
+      #OBJECTIVES
+      // sub-node 2 objective definitions
 
       #HYPEREDGE <sub-hyperedge identifier>
-         #PARAMETERS
-         // sub-hyperedge parameter definitions
-         #CONSTRAINTS
-         // sub-hyperedge constraint definitions
-
-      #VARIABLES
-      // parent variable definitions
-
+      #PARAMETERS
+      // sub-hyperedge parameter definitions
       #CONSTRAINTS
-      // parent constraint definitions
+      // sub-hyperedge constraint definitions
 
-      #OBJECTIVES
-      // parent objective definitions
+   #VARIABLES
+   // parent variable definitions
+   #CONSTRAINTS
+   // parent constraint definitions
+   #OBJECTIVES
+   // parent objective definitions
 
 Information can be exchanged between different levels in the hierarchy, notably through parameters and variables. However, the direction in which information can be shared between levels depends on its nature, as discussed below.
 
