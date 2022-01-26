@@ -3,7 +3,7 @@ Solver APIs
 
 The GBOML parser interfaces with a variety of open source and commercial solvers in order to solve optimization models.
 Direct access to their API is provided for several solvers, allowing users to tune algorithm parameters and query complementary information
-(e.g., dual variables, slacks or basis ranges, when available). Such parameters must be placed in file named *solver_name.opt*.
+(e.g., dual variables, slacks or basis ranges, when available). Such parameters must be placed in file named *solver_name.opt* and passed via the *--opt* option or directly from the Python API.
 More information about solver parameters can typically be found on the website of the respective solver (e.g., for `Gurobi <https://www.gurobi.com/documentation/9.1/refman/parameters.html>`_).
 
 The list of attributes that may be queried from the different solvers can be found below:

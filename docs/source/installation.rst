@@ -34,7 +34,7 @@ If you only want GBOML as an uninstalled package, installing the requirements ca
 
 .. code-block:: bash
 
-	pip install ./
+	pip install -r requirements.txt
 
 Installing Solvers
 ------------------

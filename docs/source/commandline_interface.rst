@@ -74,6 +74,14 @@ and is therefore only recommended for testing purposes (e.g., make sure that GBO
 
    --dsp_de
 
+* *Solver option parameters*: the solver's parameters can be set via a ".opt" file with:
+
+.. code-block:: bash
+
+   --opt opt_file
+
+where :math:`\texttt{<opt_file>}` is the name of the file containing the solver's parameters. If no parameters are included, the default ones are used.
+
 * *CSV*: the solution can be printed to a CSV file on a row basis (e.g., one variable per row):
 
 .. code-block:: bash
