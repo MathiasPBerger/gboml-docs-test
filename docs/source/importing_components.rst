@@ -1,5 +1,5 @@
 Importing Nodes and Hyperedges
-==============================
+------------------------------
 
 Importing Nodes
 ~~~~~~~~~~~~~~~

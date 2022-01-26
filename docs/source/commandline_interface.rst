@@ -98,7 +98,7 @@ and is therefore only recommended for testing purposes (e.g., make sure that GBO
 
 	--nb_processes <number>
 
-where :math:`\texttt{<number>}` is an integer, whose default value is 1
+where :math:`\texttt{<number>}` is an integer, whose default value is 1.
 
 * *Output*: the name of the output file can be defined with:
 

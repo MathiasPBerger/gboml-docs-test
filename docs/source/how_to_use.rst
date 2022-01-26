@@ -8,3 +8,4 @@ Two interfaces to GBOML exist, namely a command-line interface and a Python API.
 
    ./commandline_interface.rst
    ./python_interface.rst
+   ./solver_apis.rst
