@@ -24,10 +24,15 @@ The git repository can be found `here <https://gitlab.uliege.be/smart_grids/publ
 
 	git clone https://gitlab.uliege.be/smart_grids/public/gboml
 
-Then, the dependencies of GBOML can be installed by typing the following commands:
+Then, a local installation can be performed by doing:
 
 .. code-block:: bash
 
+	pip install .
+
+If you only want gboml as an uninstalled package, installing the requirements can be performed by doing, 
+
+.. code-block:: bash
 	pip install ./
 
 Installing Solvers
