@@ -50,7 +50,7 @@ Then, this node can be imported into a new node and the full microgrid problem c
 
 Note that at this stage, the *parent* node has not yet been added to the model and is currently a stand-alone imported Node object with sub-nodes and sub-hyperedges.
 
-The value of the parent node parameter :math:`\texttt{b}` can be updated as follows:
+The value of the *parent* node parameter :math:`\texttt{b}` can be updated as follows:
 
 .. code-block:: python
 
