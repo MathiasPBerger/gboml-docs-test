@@ -36,12 +36,12 @@ Then, the nodes and hyperedges may be re-named by adding "new\_" to the original
       for i, node in enumerate(nodes):
          gboml_model.change_node_name_in_hyperedge(hyperedge, old_names[i], node.get_name())
 
-Let us assume that a node named :math:`\texttt{H}` exists in a GBOML file called *test6.txt*. In addition, let us assume that a variable :math:`\texttt{x[T]}`, a parameter :math:`\texttt{b=4}`, a constraint :math:`\texttt{x[t]>= b}` and an objective :math:`\texttt{min : x[t]}` are defined in this node.
+Let us assume that a node named :math:`\texttt{N}` exists in a GBOML file called *test6.txt*. In addition, let us assume that a variable :math:`\texttt{x[T]}`, a parameter :math:`\texttt{b=4}`, a constraint :math:`\texttt{x[t]>= b}` and an objective :math:`\texttt{min : x[t]}` are defined in this node.
 Then, this node can be imported into a new node and the full microgrid problem can be encapsulated inside of it in order to create a hierarchy:
 
 .. code-block:: python
 
-   parent = gboml_model.import_node("test/test6.txt", "H")
+   parent = gboml_model.import_node("test/test6.txt", "N")
    for node in nodes:
       gboml_model.add_sub_node(node, parent)
 

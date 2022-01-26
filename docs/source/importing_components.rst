@@ -113,7 +113,7 @@ To illustrate these features, let *file3.txt* be a GBOML input file from which a
   #CONSTRAINTS
   A.x[t] + B.x[t] >=6;
 
-Let *H* be the identifier of the hyperedge that should be imported. Let us consider a second file named *file4.txt* in which *H* should be re-named as *H_1* and link two nodes named *C* and *D*. This file is given as follows:
+Let `\texttt{H}` be the identifier of the hyperedge that should be imported. Let us consider a second file named *file4.txt* in which `\texttt{H}` should be re-named as `\texttt{H_1}` and link two nodes named `\texttt{C}` and `\texttt{D}`. This file is given as follows:
 
 .. code-block:: c
 
@@ -138,7 +138,7 @@ Let *H* be the identifier of the hyperedge that should be imported. Let us consi
     A <- C;
     B <- D;
 
-The last code block imports the hyperedge *H* and re-names all occurrences of node *A* by node *C* and node *B* by node *D* and is equivalent to defining:
+The last code block imports the hyperedge `\texttt{H}` and re-names all occurrences of node `\texttt{A}` by node `\texttt{C}` and node `\texttt{B}` by node `\texttt{D}`. It is therefore equivalent to defining:
 
 .. code-block:: c
 
