@@ -37,12 +37,11 @@ Documentation is available on Read the Docs:
 
 To contribute changes:
 
-1. Fork the project on GitHub/Gitlab
+1. Fork the project on Gitlab
 2. Create a feature branch to work on in your fork (`git checkout -b new-feature`)
-3. Add your name to the AUTHORS file
-4. Commit your changes to the feature branch
-5. Push the branch to GitHub (`git push origin my-new-feature`)
-6. On GitHub, create a new pull request from the feature branch
+3. Commit your changes to the feature branch
+4. Push the branch to GitHub (`git push origin my-new-feature`)
+5. On GitHub, create a new pull request from the feature branch
 
 ## Citing GBOML
 
