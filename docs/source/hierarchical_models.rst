@@ -48,7 +48,7 @@ Sub-nodes and sub-hyperedges are defined between the :math:`\texttt{#PARAMETERS}
 
 Information can be exchanged between different levels in the hierarchy, notably through parameters and variables. However, the direction in which information can be shared between levels depends on its nature, as discussed below.
 
-Parameters can be passed from the top down. Hence, parameters defined in a parent node can be accessed in any child node or sub-hyperedge by prefixing the identifier of the parent node in any expression involving this parameter. In other words, parent node parameters can be accessed in child nodes as follows:
+Parameters can be only passed from the top down. Hence, parameters defined in a parent node can be accessed in any child node or sub-hyperedge by prefixing the identifier of the parent node in any expression involving this parameter. In other words, parent node parameters can be accessed in child nodes as follows:
 
  .. math::
 
@@ -73,7 +73,7 @@ Given these syntax rules, the following is a valid example of hierarchical param
 
 Note that indenting node blocks corresponding to different levels in the hierarchy is not mandatory but makes for easier reading.
 
-In contrast to parameters, variables can be passed from the bottom up. Thus, a parent node can define some of its variables from those of a child node as follows:
+In contrast to parameters, variables can only be passed from the bottom up. Thus, a parent node can define some of its variables using those of a child node as follows:
 
  .. math::
 
@@ -103,12 +103,12 @@ Given these syntax rules, the following is a valid example of hierarchical varia
    internal : y[10] <- B.x[10];
    external : z[10] <- C.x[10];
 
-A full valid, hierarchical GBOML is given as follows,
+These two examples can be combined to produce a valid hierarchical model example:
 
  .. code-block:: c
 
    #TIMEHORIZON
-   T = 2;
+   T = 10;
 
    #NODE A
    #PARAMETERS
