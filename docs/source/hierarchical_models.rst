@@ -46,50 +46,44 @@ Sub-nodes and sub-hyperedges are defined between the :math:`\texttt{#PARAMETERS}
       #OBJECTIVES
       // parent objective definitions
 
-Additional syntax rules must therefore be introduced to enable this feature, as discussed below.
+Information can be exchanged between different levels in the hierarchy, notably through parameters and variables. However, the direction in which information can be shared between levels depends on its nature, as discussed below.
 
-Parameters
-~~~~~~~~~~
-
-Node parameters are local to a parent node, its child nodes and hyperedges. Therefore, parameters defined in a parent node can be accessed in any resulting sub-node or sub-hyperedge by referring to the parent node's identifier in the prefix. In other words, all parent node parameters can be referred to as:
+Parameters can be passed from the top down. Hence, parameters defined in a parent node can be accessed in any child node or sub-hyperedge by prefixing the identifier of the parent node in any expression involving this parameter. In other words, parent node parameters can be accessed in child nodes as follows:
 
  .. math::
 
     \texttt{<parent node identifier>.<parameter identifier>}
 
-Given these syntax rules, the following is a valid example of hierarchical parameter use:
+Given these syntax rules, the following is a valid example of hierarchical parameter use (with three levels):
 
  .. code-block:: c
 
    #NODE A
-
-      #PARAMETERS
-         parameter_A = 1;
+   #PARAMETERS
+   parameter_A = 1;
 
       #NODE B
-
-         #PARAMETERS
-            parameter_B = 2;
+      #PARAMETERS
+      parameter_B = 2;
 
          #NODE C
-            parameter_C = 3;
-            sum_parameters = A.parameter_A + parameter_C + B.parameter_B; // = 6
+         #PARAMETERS
+         parameter_C = 3;
+         sum_parameters = A.parameter_A + B.parameter_B + parameter_C; // = 6
 
+Note that indenting node blocks corresponding to different levels in the hierarchy is not mandatory but makes for easier reading.
 
-Variables
-~~~~~~~~~
-
-A parent node can link one or several of its variables with a child node's variable by adding the following to the concerned variable definition before the semicolon,
-
- .. math::
-
-    \texttt{<- <child node identifier>.<variable identifier>}
+In contrast to parameters, variables can be passed from the bottom up. Thus, a parent node can define some of its variables from those of a child node as follows:
 
  .. math::
 
-    \texttt{<- <child node identifier>.<variable identifier>[<expression>]}
+   {\small
+   \begin{align*}
+   &\texttt{<parent node identifier> <- <child node identifier>.<variable identifier>};\\
+   &\texttt{<parent node identifier> <- <child node identifier>.<variable identifier>[<expression>]};
+   \end{align*}}
 
-Note that, the child's variable must be of same length and can only be linked with the one of its direct parent.
+Note that parent variables defined in such fashion must have the same type as the underlying child variables and vector variables must also have the same length. In addition, parent variables can only be defined from child variables one level down in the hierarchy.
 
 Given these syntax rules, the following is a valid example of hierarchical variable use:
 
@@ -98,19 +92,16 @@ Given these syntax rules, the following is a valid example of hierarchical varia
    #NODE A
 
       #NODE B
-
-         #VARIABLES
-            internal : x[10];
-            ...
-      #NODE C
-
-         #VARIABLES
-            internal : x[10];
-
-
       #VARIABLES
-         internal : y[10] <- B.x[10];
-         external : z[10] <- C.x[10];
+      internal : x[10];
+
+      #NODE C
+      #VARIABLES
+      internal : x[10];
+
+   #VARIABLES
+   internal : y[10] <- B.x[10];
+   external : z[10] <- C.x[10];
 
 A full valid, hierarchical GBOML is given as follows,
 
@@ -121,30 +112,28 @@ A full valid, hierarchical GBOML is given as follows,
 
    #NODE A
    #PARAMETERS
-      parameter_A = 1;
+   parameter_A = 1;
 
       #NODE B
-         #PARAMETERS
-            parameter_B = 1+A.parameter_A;
-         #VARIABLES
-            internal : x[10];
-         #CONSTRAINTS
-            x[t] >= parameter_B;
+      #PARAMETERS
+      parameter_B = 1+A.parameter_A;
+      #VARIABLES
+      internal : x[10];
+      #CONSTRAINTS
+      x[t] >= parameter_B;
 
       #NODE C
-         #PARAMETERS
-            parameter_C = 2+A.parameter_A;
-         #VARIABLES
-            internal : x[10];
-         #CONSTRAINTS
-            x[t] >= parameter_C;
-
+      #PARAMETERS
+      parameter_C = 2+A.parameter_A;
       #VARIABLES
-         internal : y[10] <- B.x[10];
-         external : z[10] <- C.x[10];
+      internal : x[10];
+      #CONSTRAINTS
+      x[t] >= parameter_C;
 
+   #VARIABLES
+   internal : y[10] <- B.x[10];
+   external : z[10] <- C.x[10];
    #CONSTRAINTS
-      y[t]+z[t] >= 6;
-
+   y[t]+z[t] >= 6;
    #OBJECTIVES
-      min: y[t]+z[t];
+   min: y[t]+z[t];
