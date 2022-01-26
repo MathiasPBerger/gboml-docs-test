@@ -4,7 +4,6 @@
 
 ## Contents
 
-- [Contents](#contents)
 - [About](#about)
 - [Quick start](#quick-start)
 - [Documentation](#documentation)
@@ -21,8 +20,6 @@ The Graph-Based Optimization Modeling Language (GBOML) is a modeling language fo
 ## Quick start
 
 GBOML has been tested on Windows, macOS and Linux. The simplest way to install it is via the *pip* package manager:
-
-.. code-block:: bash
 
   pip install gboml
 
