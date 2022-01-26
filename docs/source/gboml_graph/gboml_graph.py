@@ -256,8 +256,11 @@ class GbomlGraph:
 
         Returns:
             solution (numpy.ndarray) : flattened solution
+
             objective (float ) : objective value
+            
             status (str) : solver exit status
+            
             solver_info (dict) : dictionary of solver information
 
         """
