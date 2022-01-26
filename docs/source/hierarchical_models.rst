@@ -116,11 +116,12 @@ A full valid, hierarchical GBOML is given as follows,
 
  .. code-block:: c
 
-   #TIMEHORIZON T = 2;
+   #TIMEHORIZON
+   T = 2;
 
    #NODE A
-      #PARAMETERS
-         parameter_A = 1;
+   #PARAMETERS
+      parameter_A = 1;
 
       #NODE B
          #PARAMETERS
@@ -142,8 +143,8 @@ A full valid, hierarchical GBOML is given as follows,
          internal : y[10] <- B.x[10];
          external : z[10] <- C.x[10];
 
-      #CONSTRAINTS
-         y[t]+z[t] >= 6;
+   #CONSTRAINTS
+      y[t]+z[t] >= 6;
 
-      #OBJECTIVES
-         min: y[t]+z[t];
+   #OBJECTIVES
+      min: y[t]+z[t];
