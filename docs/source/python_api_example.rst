@@ -48,13 +48,15 @@ Then, this node can be imported into a new node and the full microgrid problem c
    for edge in edges:
       gboml_model.add_sub_hyperedge(edge, parent)
 
-The value of the parent node parameter :math:`\texttt{b}` can also be updated as follows:
+Note that at this stage, the *parent* node (and its sub-nodes and sub-hyperedges) has not yet been added to the model and is currently a stand-alone imported Node object.
+
+The value of the parent node parameter :math:`\texttt{b}` can be updated as follows:
 
 .. code-block:: python
 
    gboml_model.redefine_parameters_from_keywords(parent, b=6)
 
-Finally, the parent node can be added to the model and the latter can be solved with CPLEX:
+Finally, the *parent* node can be added to the model. The latter can then be generated and solved with CPLEX:
 
 .. code-block:: python
 
