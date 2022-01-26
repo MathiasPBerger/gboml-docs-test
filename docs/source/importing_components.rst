@@ -4,57 +4,62 @@ Importing Nodes and Hyperedges
 Importing Nodes
 ~~~~~~~~~~~~~~~
 
-A node can also be declared by importing it from another GBOML file by using the following rules,
+A node can be defined by importing an existing node from a GBOML input file. The imported node can be used as such or some of its attributes may be re-defined (e.g., parameter values may be changed), leading to the following syntax rules:
 
 .. code-block:: c
 
- #NODE <node identifier> = import <identifiers> FROM <filename>
- #NODE <node identifier> = import <identifiers> FROM <filename> WITH <redefinitions>
+ #NODE <new node identifier> = import <imported node identifier> from <filename>
+ #NODE <new node identifier> = import <imported node identifier> from <filename> with <redefinitions>
 
-The first node identifier is the one of the newly declared node. After the *IMPORT* keyword, a series of dot separated identifiers will name the node searched for in the file indicated by *filename*. These dot separated identifiers can name any node in *filename* by giving the full searched name layer by layer. In other words, any sub-node can be imported by identifying it as,
+If the imported node sits at the top of the node hierarchy in the GBOML input file, its identifier should be used. However, if the imported node happens to be deeper in the hierarchy, a sequence of dot-separated identifiers corresponding to its ancestors should be prefixed to its own identifier.
+For example, for a GBOML file with a 2-level hierarchy, a child node could be imported by using the following identifier:
 
 .. math::
 
-    \texttt{<parent identifier>.<sub_node identifier>}
+    \texttt{<parent node identifier>.<child node identifier>}
 
-giving the full path from the top layer nodes to the sub-node searched for. Note that if a top layer node is wanted, only its identifier is sufficient.
+When importing a node, two types of re-definitions are possible:
 
-When importing a given node, there exists two types of possible redefinitions:
+ * Re-defining parameter values (i.e., changing the value of an existing parameter).
 
- * Parameters'value: Redefining an already existing parameter by a different value.
+ * Re-defining variable type (i.e., changing the variable from external to internal or the opposite).
 
- * Variables'coupling type: Changing the internal/external type of a variable.
+To re-define the values of parameters originally defined in the imported node, their identifiers must be followed by equality signs and new values:
 
-To redefining a parameters'value, the usual parameter definition is needed as explained in the Parameters section with the identifier already existing in the node. Note that the redefinition of a parameter must not change its type (vector or scalar).
+.. code-block:: c
 
-The following rule enables to change a variable's coupling type,
+	#NODE <new node identifier> = import <imported node identifier> from <filename> with <parameter identifier> = <parameter value>;
+
+Note that the re-definition of a parameter may not change its type (i.e., vectors must remain vectors and likewise for scalars).
+In addition, several parameters can be re-defined in such fashion, provided that each assignment is followed by a semi-colon.
+
+Variable type can be re-defined with the following rules:
 
 .. code-block:: c
 
  <variable identifier> external;
  <variable identifier> internal;
 
-To illustrate, let us consider the file *file1.txt*,
+To illustrate these features, let *file1.txt* be a GBOML input file from which a node should be imported:
 
 .. code-block:: c
 
   //file1.txt
   #NODE Consumers
-    #PARAMETERS
-      total_number = 10;
+  #PARAMETERS
+  total_number = 10;
 
     #NODE consumer_1
-      #PARAMETERS
-        price_per_unit = 5;
-        avg_number_of_units = 100;
-      #VARIABLES
-        internal : delivery[T];
-      ...
+    #PARAMETERS
+    price_per_unit = 5;
+    avg_number_of_units = 100;
     #VARIABLES
-      internal : consumer_1_delivery[T] <- consumer_1.delivery[T];
-      ...
+    internal : delivery[T];
 
-The node *consumer_1* can be imported in another file *file2.txt* as,
+  #VARIABLES
+  internal : consumer_1_delivery[T] <- consumer_1.delivery[T];
+
+Let *consumer_1* be the identifier of the node that should be imported. This node can be imported in another file *file2.txt* as follows:
 
 .. code-block:: c
 
