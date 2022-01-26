@@ -48,7 +48,7 @@ Then, this node can be imported into a new node and the full microgrid problem c
    for edge in edges:
       gboml_model.add_sub_hyperedge(edge, parent)
 
-Note that at this stage, the *parent* node (and its sub-nodes and sub-hyperedges) has not yet been added to the model and is currently a stand-alone imported Node object.
+Note that at this stage, the *parent* node has not yet been added to the model and is currently a stand-alone imported Node object with sub-nodes and sub-hyperedges.
 
 The value of the parent node parameter :math:`\texttt{b}` can be updated as follows:
 
