@@ -87,3 +87,61 @@ The first rule works just like the one described above for nodes. The second rul
 	<old node identifier> <- <new node identifier>;
 
 This rule changes all encountered occurrences of the old node identifier by the new identifier in the hyperedge.
+
+To illustrate these features, let *file1.txt* be a GBOML input file from which a hyperedge should be imported:
+
+.. code-block:: c
+
+  //file1.txt
+  ...
+
+  #NODE A
+  #VARIABLES
+  external : x[t];
+  #CONSTRAINTS 
+  x[t]>= 2;
+  #OBJECTIVES
+  min: x[t];
+
+  #NODE B 
+  #VARIABLES
+  external : x[t];
+  #CONSTRAINTS
+  x[t]>= 3;
+  #OBJECTIVES
+  min: x[t];
+
+  #HYPEREDGE H
+  #CONSTRAINTS
+  A.x[t] + b.x[t] >=6; 
+
+Let *H* be the identifier of the hyperedge that should be imported. Let us consider a second file *file2.txt* in which *H* will be renamed *H_1* and link two nodes named *C* and *D*. *file2.txt* is given as follows:
+
+.. code-block:: c
+  //file1.txt
+  #NODE C
+  #VARIABLES
+  external : x[t];
+  #CONSTRAINTS 
+  x[t]>= 5;
+  #OBJECTIVES
+  min: x[t];
+
+  #NODE D 
+  #VARIABLES
+  external : x[t];
+  #CONSTRAINTS
+  x[t]>= 6;
+  #OBJECTIVES
+  min: x[t];
+
+  #HYPEREDGE H_1 = import H from "file1.txt" with 
+    A <- C;
+    B <- D;
+
+This hyperedge block defines imports the hyperedge *H* and renames all the occurences of node *A* by node *C* and node *B* by node *D* and is equivalent to defining, 
+
+.. code-block:: c
+  #HYPEREDGE H_1 
+  #CONSTRAINTS
+  C.x[t] + D.x[t] >= 6;
