@@ -74,13 +74,13 @@ and is therefore only recommended for testing purposes (e.g., make sure that GBO
 
    --dsp_de
 
-* *CSV*: the solution can be printed to a CSV file on a row basis:
+* *CSV*: the solution can be printed to a CSV file on a row basis (e.g., one variable per row):
 
 .. code-block:: bash
 
    --csv
 
-* *Transposed CSV*: the solution can be printed to a CSV file on a column basis:
+* *Transposed CSV*: the solution can be printed to a CSV file on a column basis (e.g., one variable per column):
 
 .. code-block:: bash
 
