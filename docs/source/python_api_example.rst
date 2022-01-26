@@ -3,13 +3,13 @@ Python API Example
 
 The following example illustrates various functions defined in the Python API and its *GbomlGraph* class.
 
-First, the library can be loaded as follows:
+First, the *GbomlGraph* class can be imported from the *gboml* package as follows:
 
 .. code-block:: python
 
    from gboml import GbomlGraph
 
-Second, an instance of *GbomlGraph* with a timehorizon of 3 can be created:
+Second, an instance of the *GbomlGraph* class with a time horizon of 3 can be created:
 
 .. code-block:: python
 
@@ -22,38 +22,39 @@ Third, all the nodes defined in the microgrid example can be imported:
 
    nodes, edges = gboml_model.import_all_nodes_and_edges("examples/microgrid/microgrid.txt")
 
-Then, the nodes and hyperedges may be renamed by adding "new\_" to the original names of all nodes and hyperedges,
+Then, the nodes and hyperedges may be re-named by adding "new\_" to the original names of all nodes and hyperedges,
 
 .. code-block:: python
 
    old_names = []
-      for node in nodes:
-         old_names.append(node.get_name())
-         gboml_model_with_1.rename(node, "new_"+node.get_name())
+   for node in nodes:
+      old_names.append(node.get_name())
+      gboml_model.rename(node, "new_"+node.get_name())
 
-      for hyperedge in edges:
-         gboml_model_with_1.rename(hyperedge, "new_"+hyperedge.get_name())
-         for i, node in enumerate(nodes):
-            gboml_model_with_1.change_node_name_in_hyperedge(hyperedge, old_names[i], node.get_name())
+   for hyperedge in edges:
+      gboml_model.rename(hyperedge, "new_"+hyperedge.get_name())
+      for i, node in enumerate(nodes):
+         gboml_model.change_node_name_in_hyperedge(hyperedge, old_names[i], node.get_name())
 
-We can now, for instance, load a toy node, named :math:`\texttt{H}`, present in the test as test6.txt which simply defines a variable :math:`\texttt{x[T]}`, a parameter :math:`\texttt{b=4}`, a constraint :math:`\texttt{x[t]>= b}` and an objective :math:`\texttt{min : x[t]}`. We will encapsulate all the microgrid problem inside this node.
+Let us assume that a node named :math:`\texttt{H}` exists in a GBOML file called *test6.txt*. In addition, let us assume that a variable :math:`\texttt{x[T]}`, a parameter :math:`\texttt{b=4}`, a constraint :math:`\texttt{x[t]>= b}` and an objective :math:`\texttt{min : x[t]}` are defined in this node.
+Then, this node can be imported into a new node and the full microgrid problem can be encapsulated inside of it in order to create a hierarchy:
 
 .. code-block:: python
 
-   parent = gboml_model.import_node("test/test6.txt", "H", copy=True)
+   parent = gboml_model.import_node("test/test6.txt", "H")
    for node in nodes:
       gboml_model.add_sub_node(node, parent)
 
    for edge in edges:
       gboml_model.add_sub_hyperedge(edge, parent)
 
-Let us now tweak the value of the parent's parameter :math:`\texttt{b=6}`,
+The value of the parent node parameter :math:`\texttt{b}` can also be updated as follows:
 
 .. code-block:: python
 
    gboml_model.redefine_parameters_from_keywords(parent, b=6)
 
-We will wrap everything now by adding the parent node to the model and solving it with CPLEX,
+Finally, the parent node can be added to the model and the latter can be solved with CPLEX:
 
 .. code-block:: python
 
@@ -61,7 +62,7 @@ We will wrap everything now by adding the parent node to the model and solving i
    gboml_model.build_model()
    solution = gboml_model.solve_cplex()
 
-The full code is written as follows,
+To recap, the full code reads:
 
 .. code-block:: python
 
@@ -71,16 +72,16 @@ The full code is written as follows,
    gboml_model = GbomlGraph(timehorizon)
    nodes, edges = gboml_model.import_all_nodes_and_edges("examples/microgrid/microgrid.txt")
    old_names = []
-      for node in nodes:
-         old_names.append(node.get_name())
-         gboml_model_with_1.rename(node, "new_"+node.get_name())
+   for node in nodes:
+      old_names.append(node.get_name())
+      gboml_model.rename(node, "new_"+node.get_name())
 
-      for hyperedge in edges:
-         gboml_model_with_1.rename(hyperedge, "new_"+hyperedge.get_name())
-         for i, node in enumerate(nodes):
-            gboml_model_with_1.change_node_name_in_hyperedge(hyperedge, old_names[i], node.get_name())
+   for hyperedge in edges:
+      gboml_model.rename(hyperedge, "new_"+hyperedge.get_name())
+      for i, node in enumerate(nodes):
+         gboml_model.change_node_name_in_hyperedge(hyperedge, old_names[i], node.get_name())
 
-   parent = gboml_model.import_node("test/test6.txt", "H", copy=True)
+   parent = gboml_model.import_node("test/test6.txt", "H")
    for node in nodes:
       gboml_model.add_sub_node(node, parent)
 
