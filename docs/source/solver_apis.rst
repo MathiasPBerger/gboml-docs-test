@@ -8,8 +8,7 @@ More information about solver parameters can typically be found on the website o
 
 The list of attributes that may be queried from the different solvers can be found below:
 
-* Gurobi: the following constraint attributes can be queried from the solver: *Pi* (dual variables), *Slack* (slack variables), *CBasis* (whether slack variable is in simplex basis), *SARHSLow* (right-hand side basis sensitivity information), *SARHSUp* (right-hand side basis sensitivity information).
-In addition, the following variable attributes can be queried (most of them useful for sensitivity  analyses): *VBasis*, *SAObjLow*, *SAObjUp*, *SALBLow*, *SALBUp*, *SAUBLow*, *SAUBUp*. More details can be found on the `Gurobi website <https://www.gurobi.com/documentation/9.1/refman/attributes.html>`_.
+* Gurobi: the following constraint attributes can be queried from the solver: *Pi* (dual variables), *Slack* (slack variables), *CBasis* (whether slack variable is in simplex basis), *SARHSLow* (right-hand side basis sensitivity information), *SARHSUp* (right-hand side basis sensitivity information). In addition, the following variable attributes can be queried (most of them useful for sensitivity  analyses): *VBasis*, *SAObjLow*, *SAObjUp*, *SALBLow*, *SALBUp*, *SAUBLow*, *SAUBUp*. More details can be found on the `Gurobi website <https://www.gurobi.com/documentation/9.1/refman/attributes.html>`_.
 
 * CPLEX: the following constraint attributes can be queried: dual and slack variables. The following variable attributes can be queried: basis information and dual norms.
 
