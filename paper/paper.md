@@ -32,7 +32,7 @@ bibliography: references.bib
 
 # Summary
 
-The Graph-Based Optimization Modeling Language (GBOML) is a modeling language for mathematical programming enabling the easy implementation of a broad class of structured mixed-integer linear programs typically found in applications ranging from energy system planning to supply chain management. More precisely, the language is particularly well-suited for representing problems involving the optimization of discrete-time dynamical systems over a finite time horizon and possessing a block structure that can be encoded by a hierarchical hypergraph. The language combines elements of both algebraic and object-oriented modeling languages in order to facilitate problem encoding and model re-use, speed up model generation, expose problem structure to specialised solvers and simplify post-processing. The GBOML parser, which is implemented in Python, turns GBOML input files into hierarchical graph data structures representing optimization models. The associated tool provides both a command-line interface and a Python API to construct models, and directly interfaces with a variety of open-source and commercial solvers, including structure-exploiting ones.
+The Graph-Based Optimization Modeling Language (GBOML) is a modeling language for mathematical programming enabling the easy implementation of a broad class of structured mixed-integer linear programs typically found in applications ranging from energy system planning to supply chain management. More precisely, the language is particularly well-suited for representing problems involving the optimization of discrete-time dynamical systems over a finite time horizon and possessing a block structure that can be encoded by a hierarchical hypergraph. The language combines elements of both algebraic and object-oriented modeling languages in order to facilitate problem encoding and model re-use, speed up model generation, expose problem structure to specialised solvers and simplify post-processing. The GBOML parser, which is implemented in Python, turns GBOML input files into hierarchical graph data structures representing optimization models. The associated tool provides both a command-line interface and a Python API. It also directly interfaces with a variety of open-source and commercial solvers, including structure-exploiting ones.
 
 # Statement of need
 
@@ -54,7 +54,7 @@ Against this backdrop, GBOML was designed to blend and natively support some key
 - making it easy to re-use and combine components and models
 - interfacing with commercial and open-source solvers, including structure-exploiting ones
 
-Next, we describe a short example illustrating how GBOML works. First, a model must encoded by a user in a GBOML input file. The code block below displays an input file implementing a stylised microgrid investment planning problem.
+Next, we describe a short example illustrating how GBOML works. First, a model must encoded in a GBOML input file. The code block below displays an input file implementing a stylised microgrid investment planning problem.
 
 	#TIMEHORIZON
 	T = 8760; // planning horizon (hours)
@@ -64,7 +64,7 @@ Next, we describe a short example illustrating how GBOML works. First, a model m
 
 	#NODE SOLAR_PV
 	#PARAMETERS
-	capex = 600/n; // annualised capital expenditure per unit capacity
+	capex = 600 / n; // annualised capital expenditure per unit capacity
 	capacity_factor = import "pv_gen.csv"; // normalised generation profile
 	#VARIABLES
 	internal: capacity; // capacity of solar PV plant
@@ -78,7 +78,7 @@ Next, we describe a short example illustrating how GBOML works. First, a model m
 
 	#NODE BATTERY
 	#PARAMETERS
-	capex = 150/n; // annualised capital expenditure per unit capacity
+	capex = 150 / n; // annualised capital expenditure per unit capacity
 	#VARIABLES
 	internal: capacity; // energy capacity of battery storage system
 	internal: energy[T]; // energy stored in battery storage system
@@ -97,7 +97,9 @@ Next, we describe a short example illustrating how GBOML works. First, a model m
 	#CONSTRAINTS
 	SOLAR_PV.power[t] == electrical_load[t] + BATTERY.power[t];
 
-The #NODE keyword defines a block. This file must then be parsed by the GBOML parser, which is implemented in Python. A command-line interface as well as a Python API are available to work with models, which makes it possible to cater to a broad audience including both users with little programming experience and users who are proficient in Python. Model generation can also be parallelised based on the structure provided by the user. Models are then passed to open-source or commercial solvers. Direct access to solver APIs is also provided, allowing users to tune algorithm parameters and retrieve complementary information (e.g., dual variables, slacks or basis ranges, when available). Finally, results are retrieved and can be either used directly in Python or printed to file. Two file formats are currently supported, namely CSV and JSON.
+In the GBOML input file, the optimization horizon and a global parameter are first defined. Two node blocks then define the solar photovoltaic (PV) and battery storage system models, respectively. Each node has its own parameters, variables, constraints and objectives. Finally, a hyperedge block is used to ensure that power flows in the microgrid are balanced, effectively coupling the solar PV and battery storage system nodes.
+
+Then, either the command-line interface or the Python API may be used to generate the model and solve it. Model generation can be parallelised based on the block structure provided by the user and models can be passed to open-source or commercial solvers. Direct access to several solver APIs is provided, allowing users to tune algorithm parameters and retrieve complementary information (e.g., dual variables, slacks or basis ranges, when available). Finally, results are retrieved and can be either used directly in Python or printed to file. Two file formats are currently supported, namely CSV and JSON.
 
 An early version of the tool was used in a research article studying the economics of carbon-neutral fuel production in remote areas where renewable resources are abundant [@RemoteHub]. The tool is also used in the context of a research project focusing on the design of the future Belgian energy system.
 
