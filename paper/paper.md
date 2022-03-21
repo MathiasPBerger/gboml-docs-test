@@ -4,10 +4,10 @@ tags:
   - Python
   - Optimization
   - Mixed-Integer Linear Programming
-	- Algebraic Modeling Language
-	- Object Oriented Modeling
+  - Algebraic Modeling Language
+  - Object-Oriented Modeling
   - Structured Models
-	- Decomposition Methods
+  - Decomposition Methods
 
 authors:
   - name: Bardhyl Miftari^[co-first author, corresponding author]
@@ -62,18 +62,16 @@ Next, we describe a short example illustrating how GBOML works. First, a model m
 	#NODE SOLAR_PV
 	#PARAMETERS
 	capex = 600; // capital expenditure per unit capacity
-	capacity_factor = import "pv_gen.csv";
+	capacity_factor = import "pv_gen.csv"; // per-unit generation profile
 	#VARIABLES
 	internal: capacity;
-	internal: investment_cost;
 	external: electricity[T];
 	#CONSTRAINTS
 	capacity >= 0;
 	electricity[t] >= 0;
-	electricity[t] <= capacity_factor[mod(t, 24)] * capacity;
-	investment_cost == capex * capacity;
+	electricity[t] <= capacity_factor[t] * capacity;
 	#OBJECTIVES
-	min: investment_cost;
+	min: capex * capacity;
 
 	#NODE BATTERY
 	#PARAMETERS
@@ -81,7 +79,6 @@ Next, we describe a short example illustrating how GBOML works. First, a model m
 	efficiency = 0.75;
 	#VARIABLES
 	internal: capacity;
-	internal: investment_cost;
 	internal: energy[T];
 	external: charge[T];
 	external: discharge[T];
@@ -93,9 +90,8 @@ Next, we describe a short example illustrating how GBOML works. First, a model m
 	energy[t] <= capacity;
 	energy[t+1] == energy[t] + efficiency * charge[t] - discharge[t] / efficiency;
 	energy[0] == energy[T-1];
-	investment_cost == capex * capacity;
 	#OBJECTIVES
-	min: investment_cost;
+	min: capex * capacity;
 
 	#HYPEREDGE POWER_BALANCE
 	#PARAMETERS
@@ -103,7 +99,7 @@ Next, we describe a short example illustrating how GBOML works. First, a model m
 	#CONSTRAINTS
 	SOLAR_PV.electricity[t] + BATTERY.discharge[t] == load[t] + BATTERY.charge[t];
 
-This file must then be parsed by the GBOML parser, which is implemented in Python. A command-line interface as well as a Python API are available to work with models, which makes it possible to cater to a broad audience including both users with little programming experience and users who are proficient in Python. Model generation can also be parallelised based on the structure provided by the user. Models are then passed to open-source or commercial solvers. Direct access to solver APIs is also provided, allowing users to tune algorithm parameters and retrieve complementary information (e.g., dual variables, slacks or basis ranges, when available). Finally, results are retrieved and can be either used directly in Python or printed to file. Two file formats are currently supported, namely CSV and JSON.
+The :math:`\texttt{#NODE}` keyword makes it possible to define a block. This file must then be parsed by the GBOML parser, which is implemented in Python. A command-line interface as well as a Python API are available to work with models, which makes it possible to cater to a broad audience including both users with little programming experience and users who are proficient in Python. Model generation can also be parallelised based on the structure provided by the user. Models are then passed to open-source or commercial solvers. Direct access to solver APIs is also provided, allowing users to tune algorithm parameters and retrieve complementary information (e.g., dual variables, slacks or basis ranges, when available). Finally, results are retrieved and can be either used directly in Python or printed to file. Two file formats are currently supported, namely CSV and JSON.
 
 An early version of the tool was used in a research article studying the economics of carbon-neutral fuel production in remote areas where renewable resources are abundant [@RemoteHub]. The tool is also used in the context of a research project focusing on the design of the future Belgian energy system.
 
