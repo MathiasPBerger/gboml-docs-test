@@ -54,52 +54,50 @@ Against this backdrop, GBOML was designed to blend and natively support some key
 - making it easy to re-use and combine components and models
 - interfacing with commercial and open-source solvers, including structure-exploiting ones
 
-Next, we describe a short example illustrating how GBOML works. First, a model must encoded by a user in a GBOML input file. The code block below displays an input file implementing a simple model.
+Next, we describe a short example illustrating how GBOML works. First, a model must encoded by a user in a GBOML input file. The code block below displays an input file implementing a stylised microgrid investment planning problem.
 
 	#TIMEHORIZON
-	T = 24; // number of hours in twenty years
+	T = 8760; // planning horizon (hours)
+
+	#GLOBAL
+	n = 20; // lifetime of technologies in microgrid (years)
 
 	#NODE SOLAR_PV
 	#PARAMETERS
-	capex = 600; // capital expenditure per unit capacity
-	capacity_factor = import "pv_gen.csv"; // per-unit generation profile
+	capex = 600/n; // annualised capital expenditure per unit capacity
+	capacity_factor = import "pv_gen.csv"; // normalised generation profile
 	#VARIABLES
-	internal: capacity;
-	external: electricity[T];
+	internal: capacity; // capacity of solar PV plant
+	external: power[T]; // power output of solar PV plant
 	#CONSTRAINTS
 	capacity >= 0;
-	electricity[t] >= 0;
-	electricity[t] <= capacity_factor[t] * capacity;
+	power[t] >= 0;
+	power[t] <= capacity_factor[t] * capacity;
 	#OBJECTIVES
 	min: capex * capacity;
 
 	#NODE BATTERY
 	#PARAMETERS
-	capex = 150; // capital expenditure per unit capacity
-	efficiency = 0.75;
+	capex = 150/n; // annualised capital expenditure per unit capacity
 	#VARIABLES
-	internal: capacity;
-	internal: energy[T];
-	external: charge[T];
-	external: discharge[T];
+	internal: capacity; // energy capacity of battery storage system
+	internal: energy[T]; // energy stored in battery storage system
+	external: power[T]; // power flow in/out of battery storage system
 	#CONSTRAINTS
 	capacity >= 0;
 	energy[t] >= 0;
-	charge[t] >= 0;
-	discharge[t] >= 0;
 	energy[t] <= capacity;
-	energy[t+1] == energy[t] + efficiency * charge[t] - discharge[t] / efficiency;
-	energy[0] == energy[T-1];
+	energy[t+1] == energy[t] + power[t];
 	#OBJECTIVES
 	min: capex * capacity;
 
 	#HYPEREDGE POWER_BALANCE
 	#PARAMETERS
-	load = 10;
+	electrical_load = import "electrical_load.csv";
 	#CONSTRAINTS
-	SOLAR_PV.electricity[t] + BATTERY.discharge[t] == load[t] + BATTERY.charge[t];
+	SOLAR_PV.power[t] == electrical_load[t] + BATTERY.power[t];
 
-The :math:`\texttt{#NODE}` keyword makes it possible to define a block. This file must then be parsed by the GBOML parser, which is implemented in Python. A command-line interface as well as a Python API are available to work with models, which makes it possible to cater to a broad audience including both users with little programming experience and users who are proficient in Python. Model generation can also be parallelised based on the structure provided by the user. Models are then passed to open-source or commercial solvers. Direct access to solver APIs is also provided, allowing users to tune algorithm parameters and retrieve complementary information (e.g., dual variables, slacks or basis ranges, when available). Finally, results are retrieved and can be either used directly in Python or printed to file. Two file formats are currently supported, namely CSV and JSON.
+The #NODE keyword defines a block. This file must then be parsed by the GBOML parser, which is implemented in Python. A command-line interface as well as a Python API are available to work with models, which makes it possible to cater to a broad audience including both users with little programming experience and users who are proficient in Python. Model generation can also be parallelised based on the structure provided by the user. Models are then passed to open-source or commercial solvers. Direct access to solver APIs is also provided, allowing users to tune algorithm parameters and retrieve complementary information (e.g., dual variables, slacks or basis ranges, when available). Finally, results are retrieved and can be either used directly in Python or printed to file. Two file formats are currently supported, namely CSV and JSON.
 
 An early version of the tool was used in a research article studying the economics of carbon-neutral fuel production in remote areas where renewable resources are abundant [@RemoteHub]. The tool is also used in the context of a research project focusing on the design of the future Belgian energy system.
 
