@@ -1,32 +1,32 @@
 ---
 title: 'GBOML: Graph-Based Optimization Modeling Language'
-author:
-  - name: Bardhyl Miftari
-    email: bmiftari@uliege.be
-    equal_contributor: True
-    correspondence: True
-    institute: ULg
-  - name: Mathias Berger
-    email: mathias.berger@uliege.be
-    equal_contributor: True
-    correspondence: True
-    institute: ULg
+tags:
+  - Python
+  - Optimization
+  - Mixed-Integer Linear Programming
+	- Algebraic Modeling Language
+	- Object Oriented Modeling
+  - Structured Models
+	- Decomposition Methods
+
+authors:
+  - name: Bardhyl Miftari^[co-first author, corresponding author]
+    orcid: 0000-0001-5334-0234
+    affiliation: 1
+  - name: Mathias Berger^[co-first author, corresponding author]
+    orcid: 0000-0003-3081-4833
+    affiliation: 1
   - name: Hatim Djelassi
-    institute: ULg
+    affiliation: 1
   - name: Damien Ernst
-    institute: ULg, Telecom
-institute:
-  - ULg: Department of Electrical Engineering and Computer Science, University of Liège.
-  - Telecom: LTCI, Telecom Paris, Institut Polytechnique de Paris.
-date: 28 January 2021
-output:
-  pdf_document:
-    number_sections: yes
-    toc: yes
-    toc_depth: 4
-    pandoc_args:
-      - '--lua-filter=scholarly-metadata.lua'
-      - '--lua-filter=author-info-blocks.lua'
+    orcid: 0000-0002-3035-8260
+    affiliation: "1, 2"
+affiliations:
+  - name: Department of Electrical Engineering and Computer Science, University of Liège
+    index: 1
+  - name: LTCI, Telecom Paris, Institut Polytechnique de Paris
+    index: 2
+date: 21 January 2021
 bibliography: references.bib
 ---
 
@@ -54,9 +54,7 @@ Against this backdrop, GBOML was designed to blend and natively support some key
 - making it easy to re-use and combine components and models
 - interfacing with commercial and open-source solvers, including structure-exploiting ones
 
-Next, we describe a short example illustrating how GBOML works. First, a model must encoded by a user in a GBOML input file. The code block below displays such an input file. The
-
-.. code-block:: c
+Next, we describe a short example illustrating how GBOML works. First, a model must encoded by a user in a GBOML input file. The code block below displays an input file implementing a simple model.
 
 	#TIMEHORIZON
 	T = 24; // number of hours in twenty years
