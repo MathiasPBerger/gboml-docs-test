@@ -54,7 +54,7 @@ Against this backdrop, GBOML was designed to blend and natively support some key
 - making it easy to re-use and combine components and models
 - interfacing with commercial and open-source solvers, including structure-exploiting ones
 
-Next, we describe a short example illustrating how GBOML works. First, a model must encoded in a GBOML input file. The code block below displays an input file implementing a stylised microgrid investment planning problem.
+Next, we describe a short example illustrating how GBOML works. First, a model must be encoded in a GBOML input file. The code block below displays an input file implementing a stylised microgrid investment planning problem.
 
 	#TIMEHORIZON
 	T = 8760; // planning horizon (hours)
@@ -99,7 +99,7 @@ Next, we describe a short example illustrating how GBOML works. First, a model m
 
 In the GBOML input file, the optimization horizon and a global parameter are first defined. Two node blocks then define the solar photovoltaic (PV) and battery storage system models, respectively. Each node has its own parameters, variables, constraints and objectives. Finally, a hyperedge block is used to ensure that power flows in the microgrid are balanced, effectively coupling the solar PV and battery storage system nodes.
 
-Then, either the command-line interface or the Python API may be used to generate the model and solve it. Model generation can be parallelised based on the block structure provided by the user and models can be passed to open-source or commercial solvers. Direct access to several solver APIs is provided, allowing users to tune algorithm parameters and retrieve complementary information (e.g., dual variables, slacks or basis ranges, when available). Finally, results are retrieved and can be either used directly in Python or printed to file. Two file formats are currently supported, namely CSV and JSON.
+Then, either the command-line interface or the Python API may be used to generate the model and solve it. Model generation can be parallelised based on the block structure provided by the user and models can be passed to open-source or commercial solvers. Direct access to several solver APIs is provided, allowing users to tune algorithm parameters and retrieve complementary information (e.g., dual variables, slacks or basis ranges, when available). Finally, results are retrieved and can be either printed to file or used directly in Python. Two file formats are supported at the time of writing, namely CSV and JSON.
 
 An early version of the tool was used in a research article studying the economics of carbon-neutral fuel production in remote areas where renewable resources are abundant [@RemoteHub]. The tool is also used in the context of a research project focusing on the design of the future Belgian energy system.
 
