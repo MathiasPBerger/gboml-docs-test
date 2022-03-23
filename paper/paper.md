@@ -56,46 +56,48 @@ Against this backdrop, GBOML was designed to blend and natively support some key
 
 Next, we describe a short example illustrating how GBOML works. First, a model must be encoded in a GBOML input file. The code block below displays an input file implementing a stylised microgrid investment planning problem.
 
-	#TIMEHORIZON
-	T = 8760; // planning horizon (hours)
+```
+#TIMEHORIZON
+T = 8760; // planning horizon (hours)
 
-	#GLOBAL
-	n = 20; // lifetime of technologies in microgrid (years)
+#GLOBAL
+n = 20; // lifetime of technologies in microgrid (years)
 
-	#NODE SOLAR_PV
-	#PARAMETERS
-	capex = 600 / n; // annualised capital expenditure per unit capacity
-	capacity_factor = import "pv_gen.csv"; // normalised generation profile
-	#VARIABLES
-	internal: capacity; // capacity of solar PV plant
-	external: power[T]; // power output of solar PV plant
-	#CONSTRAINTS
-	capacity >= 0;
-	power[t] >= 0;
-	power[t] <= capacity_factor[t] * capacity;
-	#OBJECTIVES
-	min: capex * capacity;
+#NODE SOLAR_PV
+#PARAMETERS
+capex = 600 / global.n; // annualised capital expenditure per unit capacity
+capacity_factor = import "pv_gen.csv"; // normalised generation profile
+#VARIABLES
+internal: capacity; // capacity of solar PV plant
+external: power[T]; // power output of solar PV plant
+#CONSTRAINTS
+capacity >= 0;
+power[t] >= 0;
+power[t] <= capacity_factor[t] * capacity;
+#OBJECTIVES
+min: capex * capacity;
 
-	#NODE BATTERY
-	#PARAMETERS
-	capex = 150 / n; // annualised capital expenditure per unit capacity
-	#VARIABLES
-	internal: capacity; // energy capacity of battery storage system
-	internal: energy[T]; // energy stored in battery storage system
-	external: power[T]; // power flow in/out of battery storage system
-	#CONSTRAINTS
-	capacity >= 0;
-	energy[t] >= 0;
-	energy[t] <= capacity;
-	energy[t+1] == energy[t] + power[t];
-	#OBJECTIVES
-	min: capex * capacity;
+#NODE BATTERY
+#PARAMETERS
+capex = 150 / global.n; // annualised capital expenditure per unit capacity
+#VARIABLES
+internal: capacity; // energy capacity of battery storage system
+internal: energy[T]; // energy stored in battery storage system
+external: power[T]; // power flow in/out of battery storage system
+#CONSTRAINTS
+capacity >= 0;
+energy[t] >= 0;
+energy[t] <= capacity;
+energy[t+1] == energy[t] + power[t];
+#OBJECTIVES
+min: capex * capacity;
 
-	#HYPEREDGE POWER_BALANCE
-	#PARAMETERS
-	electrical_load = import "electrical_load.csv";
-	#CONSTRAINTS
-	SOLAR_PV.power[t] == electrical_load[t] + BATTERY.power[t];
+#HYPEREDGE POWER_BALANCE
+#PARAMETERS
+electrical_load = import "electrical_load.csv";
+#CONSTRAINTS
+SOLAR_PV.power[t] == electrical_load[t] + BATTERY.power[t];
+```
 
 In the GBOML input file, the optimization horizon and a global parameter are first defined. Two node blocks then define the solar photovoltaic (PV) and battery storage system models, respectively. Each node has its own parameters, variables, constraints and objectives. Finally, a hyperedge block is used to ensure that power flows in the microgrid are balanced, effectively coupling the solar PV and battery storage system nodes.
 
