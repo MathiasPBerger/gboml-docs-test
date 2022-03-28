@@ -54,6 +54,8 @@ Against this backdrop, GBOML was designed to blend and natively support some key
 - making it easy to re-use and combine components and models
 - interfacing with commercial and open-source solvers, including structure-exploiting ones
 
+An early version of the tool was used in a research article studying the economics of carbon-neutral fuel production in remote areas where renewable resources are abundant [@RemoteHub]. The tool is also used in the context of a research project focusing on the design of the future Belgian energy system.
+
 # Example
 
 Next, we describe a short example illustrating how GBOML works. First, a model must be encoded in a GBOML input file. An input file implementing a stylised microgrid investment planning problem is shown below.
@@ -98,9 +100,13 @@ electrical_load = import "electrical_load.csv";
 SOLAR_PV.power[t] == electrical_load[t] + BATTERY.power[t];
 ```
 
-The optimization horizon is defined at the beginning of the GBOML input file. Two node blocks then define the solar photovoltaic (PV) and battery storage system models, respectively. Each node has its own parameters, variables, constraints and objectives. Finally, a hyperedge block is used to ensure that power flows in the microgrid are balanced and the electricity demand is satisfied. Then, the command-line interface or the Python API may be used to generate the model and solve it. Model generation can be parallelised based on the block structure provided by the user and models can be passed to open-source or commercial solvers. Direct access to several solver APIs is provided, allowing users to tune algorithm parameters and query complementary information (e.g., dual variables, slacks or basis ranges, when available). Finally, results are retrieved and can be either printed to file or used directly in Python. Two file formats are supported at the time of writing, namely CSV and JSON. The full GBOML syntax is described in the online documentation, along with advanced features such as model imports and hierarchical model construction. The data files required to run the example above are available in the GBOML repository.
+The optimization horizon is defined at the beginning of the GBOML input file. Two node blocks then define the solar photovoltaic (PV) and battery storage system models, respectively. Each node has its own parameters, variables, constraints and objectives. Finally, a hyperedge block is used to ensure that power flows in the microgrid are balanced and the electricity demand is satisfied.
 
-An early version of the tool was used in a research article studying the economics of carbon-neutral fuel production in remote areas where renewable resources are abundant [@RemoteHub]. The tool is also used in the context of a research project focusing on the design of the future Belgian energy system.
+Then, the command-line interface or the Python API may be used to generate the model and solve it. Model generation can be parallelised based on the block structure provided by the user and models can be passed to open-source or commercial solvers. Direct access to several solver APIs is provided, allowing users to tune algorithm parameters and query complementary information (e.g., dual variables, slacks or basis ranges, when available).
+
+Finally, results are retrieved and can be either printed to file or used directly in Python. Two file formats are supported at the time of writing, namely CSV and JSON.
+
+The full GBOML syntax is described in the online documentation, along with advanced features such as model imports and hierarchical model construction and solver options. The data files required to run the example above are available in the GBOML repository.
 
 # Acknowledgements
 
