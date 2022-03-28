@@ -106,7 +106,7 @@ Then, the command-line interface or the Python API may be used to generate the m
 
 Finally, results are retrieved and can be either printed to file or used directly in Python. Two file formats are supported at the time of writing, namely CSV and JSON.
 
-The full GBOML syntax is described in the online documentation, along with advanced features such as model imports and hierarchical model construction as well as solver options. The data files required to run the example above are available in the GBOML repository.
+The full GBOML syntax is described in the online documentation, along with advanced features such as model imports and hierarchical model construction as well as solver options. The files required to run the example above are available in the GBOML repository.
 
 # Acknowledgements
 
