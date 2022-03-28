@@ -54,6 +54,8 @@ Against this backdrop, GBOML was designed to blend and natively support some key
 - making it easy to re-use and combine components and models
 - interfacing with commercial and open-source solvers, including structure-exploiting ones
 
+# Example
+
 Next, we describe a short example illustrating how GBOML works. First, a model must be encoded in a GBOML input file. An input file implementing a stylised microgrid investment planning problem is shown below.
 
 ```
